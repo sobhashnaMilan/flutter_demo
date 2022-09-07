@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/ui/style/components/button_component.dart';
+import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:get/get.dart';
 
@@ -69,11 +71,14 @@ class _FireBaseAuthState extends State<FireBaseAuth> {
                 ],
               ),
             )),
-            ElevatedButton(
-                onPressed: () {
-                  validation();
-                },
-                child: const Text(StringConstant.btnOk))
+            ButtonComponent(
+              onPressed: () {
+                validation();
+              },
+              context: context,
+              backgroundColor: AppColors.blueColor,
+              text: StringConstant.btnOk,
+            )
           ],
         ),
       ),
@@ -84,7 +89,7 @@ class _FireBaseAuthState extends State<FireBaseAuth> {
 
   void validation() {
     if (authController.validation(context).value) {
-      var number = "+91" + authController.textController.text;
+      var number = "+91${authController.textController.text}";
       Get.to(const OtpScreen(), arguments: [number]);
     }
   }

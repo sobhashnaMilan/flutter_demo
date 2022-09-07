@@ -9,7 +9,9 @@ Map<String, String> de_DE = {
   StringConstant.appName: "Agile GetX-Demo",
   StringConstant.noDataFoundLabel: "Keine Daten gefunden",
   StringConstant.gettingDataLabel: "Daten abrufen...",
-
+  StringConstant.welcome: 'Velkommen',
+  StringConstant.message: 'Understøttelse af flere sprog',
+  StringConstant.changeLanguage: 'Skift sprog',
   /// other strings
   StringConstant.requestTimeOutMsg: "Zeitüberschreitung der Anforderung",
   StringConstant.somethingWentWrongMsg: "Etwas ist schief gelaufen",

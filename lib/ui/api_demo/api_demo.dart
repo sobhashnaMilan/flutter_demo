@@ -1,6 +1,8 @@
 import 'package:flutter_demo/util/import_export_util.dart';
+
 import '../../controllers/api_demo_controller.dart';
 import '../../util/remove_glow_effect.dart';
+import '../common/home_screen.dart';
 
 class ApiDemo extends StatefulWidget {
   const ApiDemo({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class _ApiDemoState extends State<ApiDemo> {
             CommonStyle.setDynamicHeight(context: context, value: 0.01),
           ),
           child: Obx(
-                () => controller.isDataLoading.value
+            () => controller.isDataLoading.value
                 ? CommonStyle.displayLoadingIndicator(deviceType)
                 : buildBodySection(deviceType),
           )),
@@ -53,30 +55,31 @@ class _ApiDemoState extends State<ApiDemo> {
 
   Widget buildBodySection(DeviceType type) {
     return RefreshIndicator(
-      onRefresh: () => homeDataAPICall(pullToRefresh: true, lng: "122.084"),
+      onRefresh: () => homeDataAPICall(pullToRefresh: true),
       child: Stack(
         children: [
+          buildLoadNoDataSection(type),
           controller.homeDataList.isEmpty
               ? Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: CommonStyle.setDynamicHeight(
-                      context: context,
-                      value: type == DeviceType.mobile ? 0.2 : 0.05),
-                ),
-                child: ScrollConfiguration(
-                  behavior: RemoveGlowEffect(),
-                  child: ListView(),
-                ),
-              ),
-              CommonStyle.loadNoDataView(
-                  context: context, deviceType: type),
-            ],
-          )
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: CommonStyle.setDynamicHeight(
+                            context: context,
+                            value: type == DeviceType.mobile ? 0.2 : 0.05),
+                      ),
+                      child: ScrollConfiguration(
+                        behavior: RemoveGlowEffect(),
+                        child: ListView(),
+                      ),
+                    ),
+                    CommonStyle.loadNoDataView(
+                        context: context, deviceType: type),
+                  ],
+                )
               : type == DeviceType.mobile
-              ? buildItemList()
-              : buildItemListWeb(),
+                  ? buildItemList()
+                  : buildItemListWeb(),
         ],
       ),
     );
@@ -85,7 +88,7 @@ class _ApiDemoState extends State<ApiDemo> {
   Widget buildItemList() {
     return Padding(
       padding: EdgeInsets.only(
-        top: CommonStyle.setDynamicHeight(context: context, value: 0.055),
+        top: CommonStyle.setDynamicHeight(context: context, value: 0.095),
       ),
       child: ScrollConfiguration(
         behavior: RemoveGlowEffect(),
@@ -97,7 +100,7 @@ class _ApiDemoState extends State<ApiDemo> {
               padding: EdgeInsets.fromLTRB(
                 CommonStyle.setDynamicWidth(context: context, value: 0.00),
                 CommonStyle.setDynamicHeight(context: context, value: 0.01),
-                CommonStyle.setDynamicWidth(context: context, value: 1000),
+                CommonStyle.setDynamicWidth(context: context, value: 0.00),
                 CommonStyle.setDynamicHeight(context: context, value: 0.01),
               ),
               child: buildItemRow(i: index, deviceType: DeviceType.mobile),
@@ -111,7 +114,7 @@ class _ApiDemoState extends State<ApiDemo> {
   Widget buildItemListWeb() {
     return Padding(
       padding: EdgeInsets.only(
-        top: CommonStyle.setDynamicHeight(context: context, value: 0.055),
+        top: CommonStyle.setDynamicHeight(context: context, value: 0.15),
       ),
       child: GridView.builder(
         shrinkWrap: true,
@@ -121,7 +124,7 @@ class _ApiDemoState extends State<ApiDemo> {
             padding: EdgeInsets.fromLTRB(
               CommonStyle.setDynamicWidth(context: context, value: 0.00),
               CommonStyle.setDynamicHeight(context: context, value: 0.01),
-              CommonStyle.setDynamicWidth(context: context, value: 0.09),
+              CommonStyle.setDynamicWidth(context: context, value: 0.00),
               CommonStyle.setDynamicHeight(context: context, value: 0.01),
             ),
             child: buildItemRow(i: index, deviceType: DeviceType.desktop),
@@ -129,7 +132,7 @@ class _ApiDemoState extends State<ApiDemo> {
         },
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 7,
+          childAspectRatio: 5.5,
         ),
       ),
     );
@@ -149,69 +152,21 @@ class _ApiDemoState extends State<ApiDemo> {
           CommonStyle.setDynamicHeight(context: context, value: 0.01),
         ),
         child: Text(
-          (controller.homeDataList[i].name) ?? "",
+          ("${controller.homeDataList[i].name!}\n\n${controller.homeDataList[i].email!}\n\n${controller.homeDataList[i].gender!}") ??
+              "",
           style: deviceType == DeviceType.mobile
               ? black80Medium20TextStyle(context)
               : black80Medium10TextStyle(context),
-          maxLines: 3,
+          // maxLines: 5,
           overflow: TextOverflow.ellipsis,
         ),
       ),
     );
   }
 
-  /*Widget userList(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Obx(
-            () => ListView.builder(
-                itemCount: controller.userList.length,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    height: CommonStyle.setDynamicHeight(context: context, value: 0.09),
-                    child: buildRowItem(controller.userList.value[index]),
-                  );
-                }),
-          ),
-        ),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-              onPressed: () {
-                userAddAPICall();
-              },
-              child: const Text(StringConstant.btnAddUser)),
-        ),
-      ],
-    );
-  }*/
-
-  /// listview Row item
-
-  /*Widget buildRowItem(UserModel userList) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-      child: Padding(
-        padding: EdgeInsets.all(
-            CommonStyle.setLongestSide(context: context, value: 0.01),
-        ),
-        child: Text(
-          userList.name!,
-        ),
-      ),
-    );
-  }*/
-
   /// get user list api call [Get Method]
 
-  Future<void> homeDataAPICall({
-    bool pullToRefresh = false,
-    String lng = "-122.084",
-  }) async {
-
+  Future<void> homeDataAPICall({bool pullToRefresh = false}) async {
     await controller.homeDataAPICall(
       requestParams: null,
       pullToRefresh: pullToRefresh,
@@ -224,8 +179,23 @@ class _ApiDemoState extends State<ApiDemo> {
   }
 
   /// add user list api call [Post Method]
-
-  /*userAddAPICall() {
+  Widget buildLoadNoDataSection(DeviceType type) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: CommonStyle.setDynamicHeight(context: context, value: 0.02),
+      ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ButtonComponent(
+          context: context,
+          backgroundColor: AppColors.blueColor,
+          onPressed: () {},
+          text: "add User",
+        ),
+      ),
+    );
+  }
+/*userAddAPICall() {
     isNetworkConnected().then(
       (connection) {
         if (connection) {

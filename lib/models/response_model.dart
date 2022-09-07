@@ -1,3 +1,5 @@
+import 'package:flutter_demo/models/user_list_model.dart';
+
 import '../../models/home_model.dart';
 import '../../models/user_model.dart';
 
@@ -23,6 +25,8 @@ class ResponseModel<T> {
       return UserModel.fromJson(json) as T;
     } else if (T == HomeModel) {
       return HomeModel.fromJson(json) as T;
+    } else if (T == HomeModelCustom) {
+      return HomeModelCustom.fromJson(json) as T;
     } else {
       throw Exception('Unknown class');
     }

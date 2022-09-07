@@ -16,6 +16,7 @@ var sharedServiceManager = RemoteServices.singleton;
 
 class RemoteServices {
   static var dio = initDio();
+  static var mDio = mInitDio();
 
   RemoteServices._internal();
 
@@ -26,28 +27,71 @@ class RemoteServices {
   }
 
   /// GET requests
-  Future<ResponseModel<T>> createGetRequest<T>({required ApiType typeOfEndPoint, Map<String, dynamic>? params, String? urlParam}) async {
+  Future<ResponseModel<T>> createGetRequest<T>(
+      {required ApiType typeOfEndPoint,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint, params: params, urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSync(
+          typeOfEndPoint,
+          params: params,
+          urlParams: urlParam);
 
       try {
-        Response response = await dio.get(requestFinal.item1, options: Options(headers: requestFinal.item2));
-
+        Response response = await dio.get(requestFinal.item1,
+            options: Options(headers: requestFinal.item2));
         final Map<String, dynamic> responseJson = json.decode(response.data.toString());
-
         return ResponseModel<T>.fromJson(responseJson, response.statusCode!);
       } on DioError catch (e) {
-        return createErrorResponse(status: ApiConstant.statusCodeBadGateway, message: e.message);
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: e.message);
       }
     } else {
-      return createErrorResponse(status: ApiConstant.statusCodeServiceNotAvailable, message: StringConstant.noInternetMsg);
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
+    }
+  }
+
+  /// GET requests custom
+  Future<ResponseModel<T>> createGetRequestCustom<T>(
+      {required ApiType typeOfEndPoint,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
+    if (await NetworkUtil.isNetworkConnected()) {
+      final requestFinal = ApiConstant.requestParamsForSyncCustomList(
+          typeOfEndPoint,
+          params: params,
+          urlParams: urlParam);
+
+      try {
+        Response response = await mDio.get(requestFinal.item1,
+            options: Options(headers: requestFinal.item2));
+        // var d = ResponseModel(status: 2,message: "good",data: response.data);
+        // final Map<String, dynamic> responseJson = json.decode(d.data.toString());
+        var d = {"data": response.data, "status": 200, "message": "good"};
+        return ResponseModel<T>.fromJson(d, response.statusCode!);
+      } on DioError catch (e) {
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: e.message);
+      }
+    } else {
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
     }
   }
 
   /// POST requests
-  Future<ResponseModel<T>> createPostRequest<T>({required ApiType typeOfEndPoint, Map<String, dynamic>? params, String? urlParam}) async {
+  Future<ResponseModel<T>> createPostRequest<T>(
+      {required ApiType typeOfEndPoint,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSyncCustomList(typeOfEndPoint, params: params, urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSyncCustomList(
+          typeOfEndPoint,
+          params: params,
+          urlParams: urlParam);
       /*
       * item1 => API End-Point
       * item2 => Header
@@ -55,27 +99,34 @@ class RemoteServices {
       * item4 => Multipart file
       * */
       try {
-        Response response = await dio.post(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
+        // Response response = await dio.post(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
+        Response response = await mDio.post(requestFinal.item1,
+            data: requestFinal.item3,
+            options: Options(headers: requestFinal.item2));
 
         return ResponseModel<T>.fromJson(response.data, response.statusCode);
       } on DioError catch (e) {
-        return createErrorResponse(status: ApiConstant.statusCodeBadGateway, message: e.message);
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: e.message);
       }
     } else {
-      return createErrorResponse(status: ApiConstant.statusCodeServiceNotAvailable, message: StringConstant.noInternetMsg);
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
     }
   }
+
 /*
   /// POST requests
   Future<UserListModel> createPostRequestCustomList<T>({required ApiType typeOfEndPoint, Map<String, dynamic>? params, String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
       final requestFinal = ApiConstant.requestParamsForSyncCustomList(typeOfEndPoint, params: params, urlParams: urlParam);
-      *//*
+      */ /*
       * item1 => API End-Point
       * item2 => Header
       * item3 => Request Param
       * item4 => Multipart file
-      * *//*
+      * */ /*
       try {
         Response response = await dio.post(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
 
@@ -92,11 +143,14 @@ class RemoteServices {
     return UserListModel(id: 0,email: "null",gender: "null",name: "null",status: "null");
   }*/
 
-
   /// PUT requests
-  Future<ResponseModel<T>> createPutRequest<T>({required ApiType typeOfEndPoint, Map<String, dynamic>? params, String? urlParam}) async {
+  Future<ResponseModel<T>> createPutRequest<T>(
+      {required ApiType typeOfEndPoint,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint, params: params, urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint,
+          params: params, urlParams: urlParam);
       /*
       * item1 => API End-Point
       * item2 => Header
@@ -104,21 +158,31 @@ class RemoteServices {
       * item4 => Multipart file
       * */
       try {
-        Response response = await dio.put(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
+        Response response = await dio.put(requestFinal.item1,
+            data: requestFinal.item3,
+            options: Options(headers: requestFinal.item2));
 
-        return ResponseModel<T>.fromJson(json.decode(response.data.toString()), response.statusCode);
+        return ResponseModel<T>.fromJson(
+            json.decode(response.data.toString()), response.statusCode);
       } on DioError catch (e) {
-        return createErrorResponse(status: ApiConstant.statusCodeBadGateway, message: e.message);
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: e.message);
       }
     } else {
-      return createErrorResponse(status: ApiConstant.statusCodeServiceNotAvailable, message: StringConstant.noInternetMsg);
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
     }
   }
 
   /// DELETE requests
-  Future<ResponseModel<T>> createDeleteRequest<T>({required ApiType typeOfEndPoint, Map<String, dynamic>? params, String? urlParam}) async {
+  Future<ResponseModel<T>> createDeleteRequest<T>(
+      {required ApiType typeOfEndPoint,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint, params: params, urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint,
+          params: params, urlParams: urlParam);
       /*
       * item1 => API End-Point
       * item2 => Header
@@ -126,24 +190,35 @@ class RemoteServices {
       * item4 => Multipart file
       * */
       try {
-        Response response = await dio.delete(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
+        Response response = await dio.delete(requestFinal.item1,
+            data: requestFinal.item3,
+            options: Options(headers: requestFinal.item2));
 
-        return ResponseModel<T>.fromJson(json.decode(response.data.toString()), response.statusCode);
+        return ResponseModel<T>.fromJson(
+            json.decode(response.data.toString()), response.statusCode);
       } on DioError catch (e) {
-        return createErrorResponse(status: ApiConstant.statusCodeBadGateway, message: e.message);
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: e.message);
       }
     } else {
-      return createErrorResponse(status: ApiConstant.statusCodeServiceNotAvailable, message: StringConstant.noInternetMsg);
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
     }
   }
 
-  ResponseModel<T> createErrorResponse<T>({required int status, required String message}) {
+  ResponseModel<T> createErrorResponse<T>(
+      {required int status, required String message}) {
     return ResponseModel(status: status, message: message, data: null);
   }
 
-  Future<ResponseModel<T>> uploadRequest<T>(ApiType apiType, {Map<String, dynamic>? params, List<AppMultiPartFile>? arrFile, String? urlParam}) async {
+  Future<ResponseModel<T>> uploadRequest<T>(ApiType apiType,
+      {Map<String, dynamic>? params,
+      List<AppMultiPartFile>? arrFile,
+      String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSync(apiType, params: params, arrFile: arrFile ?? []);
+      final requestFinal = ApiConstant.requestParamsForSync(apiType,
+          params: params, arrFile: arrFile ?? []);
 
       Map<String, dynamic> other = <String, dynamic>{};
       other.addAll(requestFinal.item3);
@@ -156,24 +231,32 @@ class RemoteServices {
 
           /// PDF Media
           if (filename.toLowerCase().contains(".pdf")) {
-            MultipartFile mFile = await MultipartFile.fromFile(file.path, filename: filename);
+            MultipartFile mFile =
+                await MultipartFile.fromFile(file.path, filename: filename);
             uploadFiles.add(mFile);
           }
 
           /// Video Media
-          else if (filename.toLowerCase().contains(".mp4") || filename.toLowerCase().contains(".mov") || filename.toLowerCase().contains(".mkv")) {
-            MultipartFile mFile = await MultipartFile.fromFile(file.path, filename: filename, contentType: MediaType('video', filename.split(".").last));
+          else if (filename.toLowerCase().contains(".mp4") ||
+              filename.toLowerCase().contains(".mov") ||
+              filename.toLowerCase().contains(".mkv")) {
+            MultipartFile mFile = await MultipartFile.fromFile(file.path,
+                filename: filename,
+                contentType: MediaType('video', filename.split(".").last));
             uploadFiles.add(mFile);
           }
 
           /// Image Media
           else {
-            MultipartFile mFile = await MultipartFile.fromFile(file.path, filename: filename, contentType: MediaType('image', filename.split(".").last));
+            MultipartFile mFile = await MultipartFile.fromFile(file.path,
+                filename: filename,
+                contentType: MediaType('image', filename.split(".").last));
             uploadFiles.add(mFile);
           }
         }
         if (uploadFiles.isNotEmpty) {
-          other[partFile.key ?? ""] = (uploadFiles.length == 1) ? uploadFiles.first : uploadFiles;
+          other[partFile.key ?? ""] =
+              (uploadFiles.length == 1) ? uploadFiles.first : uploadFiles;
         }
       }
 
@@ -191,12 +274,16 @@ class RemoteServices {
           },
         );
 
-        return ResponseModel<T>.fromJson(json.decode(response.data.toString()), response.statusCode);
+        return ResponseModel<T>.fromJson(
+            json.decode(response.data.toString()), response.statusCode);
       } on DioError catch (error) {
-        return createErrorResponse(status: ApiConstant.statusCodeBadGateway, message: error.message);
+        return createErrorResponse(
+            status: ApiConstant.statusCodeBadGateway, message: error.message);
       }
     } else {
-      return createErrorResponse(status: ApiConstant.statusCodeServiceNotAvailable, message: StringConstant.noInternetMsg);
+      return createErrorResponse(
+          status: ApiConstant.statusCodeServiceNotAvailable,
+          message: StringConstant.noInternetMsg);
     }
   }
 }

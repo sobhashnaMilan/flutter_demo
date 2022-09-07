@@ -77,11 +77,6 @@ class CommonStyle {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ImageComponent.loadLocalImage(
-            imageName: "empty_box.png",
-            height: setDynamicHeight(context: context, value: 0.25),
-            width: setDynamicWidth(context: context, value: 0.35),
-          ),
           Text(
             StringConstant.noDataFoundLabel.tr,
             style: deviceType == DeviceType.mobile

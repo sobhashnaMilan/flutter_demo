@@ -63,4 +63,8 @@ class StringConstant {
   static const String btnVerify = 'Verify';
   static const String btnResend = 'Resend';
 
+  ///language change
+  static const String welcome = 'welcome';
+  static const String message = 'message';
+  static const String changeLanguage = 'changeLanguage';
 }

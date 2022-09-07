@@ -44,13 +44,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
-    AwesomeNotifications()
-        .actionStream
-        .listen((ReceivedNotification receivedNotification) {
-      Logger().d("💣 😀 =====> AwesomeNotifications -> click");
-      var mReceivedNotification = receivedNotification.toMap().toString();
-      Logger().d("💣 😀 =====> AwesomeNotifications -> $mReceivedNotification");
-    });
     if (arguments != null) {
       Logger().d("💣 😀 =====> arguments -> ${arguments[0].toString()}");
     }

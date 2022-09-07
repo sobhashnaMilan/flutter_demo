@@ -9,7 +9,9 @@ Map<String, String> hi_HI = {
   StringConstant.appName: "एजाइल गेटएक्स डेमो",
   StringConstant.noDataFoundLabel: "कोई डेटा नहीं मिला",
   StringConstant.gettingDataLabel: "डेटा प्राप्त किया जा रहा है...",
-
+  StringConstant.welcome: 'स्वागत',
+  StringConstant.message:'बहु भाषा समर्थन',
+  StringConstant.changeLanguage:'भाषा बदलो',
   /// other strings
   StringConstant.requestTimeOutMsg: "अनुरोध का समय समाप्त",
   StringConstant.somethingWentWrongMsg: "कुछ गलत हो गया",

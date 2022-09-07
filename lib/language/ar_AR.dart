@@ -9,6 +9,9 @@ Map<String, String> ar_AR = {
   StringConstant.appName: "Agile GetX التجريبي",
   StringConstant.noDataFoundLabel: "لاتوجد بيانات",
   StringConstant.gettingDataLabel: "الحصول على البيانات...",
+  StringConstant.welcome: "أهلا وسهلا",
+  StringConstant.message: "دعم متعدد اللغات",
+  StringConstant.changeLanguage: "تغيير اللغة",
 
   /// other strings
   StringConstant.requestTimeOutMsg: "الطلب منتهي المدة",

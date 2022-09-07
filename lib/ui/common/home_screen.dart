@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/ui/style/components/app_bar_component.dart';
+import 'package:flutter_demo/ui/style/components/button_component.dart';
 import 'package:flutter_demo/ui/style/text_styles.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
+import 'package:flutter_demo/util/import_export_util.dart';
 import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:get/get.dart';
 import '../../controllers/PlatformChannelsController.dart';
@@ -23,7 +25,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     DeviceType deviceType = ResponsiveUtil.isMobile(context)
         ? DeviceType.mobile
         : DeviceType.desktop;
@@ -54,80 +54,76 @@ class _HomeScreenState extends State<HomeScreen> {
                       : white100Medium10TextStyle(context),
                 ),
               ),
-              body: homeView());
+              body: homeView(deviceType));
         });
   }
 
-  Widget homeView() {
+  Widget homeView(DeviceType deviceType) {
     return Container(
       width: Get.width,
       height: Get.height,
       color: Colors.brown,
       padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CustomButton(
-                onPress: () {
-                  Get.to(const FireBaseAuth());
-                },
-                text: StringConstant.btnFirebaseOtp),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () {
-                  Get.to(const ApiDemo());
-                },
-                text: StringConstant.btnApiDemo),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () => Get.to(const DeepLinkFirebase()),
-                text: StringConstant.btnDeepLink),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () => Get.to(const MultiLanguage()),
-                text: StringConstant.btnMultiLanguage),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () => Get.to(const LocationService()),
-                text: StringConstant.btnLocationService),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () =>
-                    Get.toNamed(ScreenRoutesConstant.platformChannelsScreen),
-                text: StringConstant.btnPlatformChannels),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () =>
-                    Get.toNamed(ScreenRoutesConstant.notificationScreen),
-                text: StringConstant.btnNotification),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () => Get.to(const NavigatorOne()),
-                text: StringConstant.btnNavigator),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-                onPress: () => Get.to(const EquatableDemo()),
-                text: StringConstant.btnEquatableDemo),
-          ],
-        ),
+      child: GridView.extent(
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 30,
+        childAspectRatio: 8,
+        maxCrossAxisExtent: deviceType == DeviceType.mobile ? 900.0 : 400.0,
+        primary: false,
+        children: <Widget>[
+          ButtonComponent(
+            backgroundColor: AppColors.blueColor,
+            context: context,
+            onPressed: () {
+              Get.to(const FireBaseAuth());
+            },
+            text: StringConstant.btnFirebaseOtp,
+          ),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () {
+                Get.to(const ApiDemo());
+              },
+              text: StringConstant.btnApiDemo),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.to(const DeepLinkFirebase()),
+              text: StringConstant.btnDeepLink),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.to(const MultiLanguage()),
+              text: StringConstant.btnMultiLanguage),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.to(const LocationService()),
+              text: StringConstant.btnLocationService),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () =>
+                  Get.toNamed(ScreenRoutesConstant.platformChannelsScreen),
+              text: StringConstant.btnPlatformChannels),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () =>
+                  Get.toNamed(ScreenRoutesConstant.notificationScreen),
+              text: StringConstant.btnNotification),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.to(const NavigatorOne()),
+              text: StringConstant.btnNavigator),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.to(const EquatableDemo()),
+              text: StringConstant.btnEquatableDemo),
+        ],
       ),
     );
   }

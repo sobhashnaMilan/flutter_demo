@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/ui/style/components/button_component.dart';
+import 'package:flutter_demo/ui/style/style.dart';
+import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
+import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 import '../../util/app_logger.dart';
 import 'otp_login.dart';
-
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void initState() {
     super.initState();
-    Logger().d( "number -> ${arguments[0]}");
+    Logger().d("number -> ${arguments[0]}");
     authController.number.value = arguments[0];
     _verifyNumber();
   }
@@ -37,24 +40,24 @@ class _OtpScreenState extends State<OtpScreen> {
     await auth.verifyPhoneNumber(
       phoneNumber: authController.number.value,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        Logger().d( 'verificationCompleted ----------------->');
+        Logger().d('verificationCompleted ----------------->');
 
         /// auto verify PhoneNumber in android only
 
         await auth
             .signInWithCredential(credential)
             .then((value) => _logIn())
-            .catchError((e) => Logger().d( "error -> $e"));
+            .catchError((e) => Logger().d("error -> $e"));
       },
       verificationFailed: (FirebaseAuthException e) {
-        Logger().d( 'FirebaseAuthException -> $e');
+        Logger().d('FirebaseAuthException -> $e');
       },
       codeSent: (String verificationId, int? resendToken) {
         authController.verificationId.value = verificationId;
         authController.resendToken.value = resendToken!;
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        Logger().d( 'Timeout -> $verificationId');
+        Logger().d('Timeout -> $verificationId');
       },
     );
   }
@@ -65,23 +68,23 @@ class _OtpScreenState extends State<OtpScreen> {
     await auth.verifyPhoneNumber(
       phoneNumber: authController.number.value,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        Logger().d( 'verificationCompleted -----------> ');
+        Logger().d('verificationCompleted -----------> ');
 
         /// auto verify PhoneNumber in android only
 
         await auth
             .signInWithCredential(credential)
             .then((value) => _logIn())
-            .catchError((e) => Logger().d( "error -> $e"));
+            .catchError((e) => Logger().d("error -> $e"));
       },
       verificationFailed: (FirebaseAuthException e) {
-        Logger().d( 'FirebaseAuthException -> $e');
+        Logger().d('FirebaseAuthException -> $e');
       },
       codeSent: (String verificationId, int? resendToken) {
         authController.verificationId.value = verificationId;
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        Logger().d( 'Timeout -> $verificationId');
+        Logger().d('Timeout -> $verificationId');
       },
     );
   }
@@ -89,7 +92,7 @@ class _OtpScreenState extends State<OtpScreen> {
   /// check otp [submit otp]
 
   Future<void> _submitOTP(String smsCode) async {
-    Logger().d( "otp -> $smsCode");
+    Logger().d("otp -> $smsCode");
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: authController.verificationId.value, smsCode: smsCode);
@@ -97,19 +100,23 @@ class _OtpScreenState extends State<OtpScreen> {
     await auth
         .signInWithCredential(credential)
         .then((value) => _logIn())
-        .catchError((e) => Logger().d( "error -> $e"));
+        .catchError((e) => Logger().d("error -> $e"));
   }
 
   /// get current user
 
   void _logIn() async {
     var user = auth.currentUser;
-    Logger().d( "login check -> ${user?.phoneNumber}");
+    Logger().d("login check -> ${user?.phoneNumber}");
     Get.off(const OtpLogin());
   }
 
   @override
   Widget build(BuildContext context) {
+    DeviceType deviceType = ResponsiveUtil.isMobile(context)
+        ? DeviceType.mobile
+        : DeviceType.desktop;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(StringConstant.appName),
@@ -144,21 +151,66 @@ class _OtpScreenState extends State<OtpScreen> {
                 ],
               ),
             )),
-            ElevatedButton(
-                onPressed: () {
-                  _submitOTP(authController.otpController.text.isNotEmpty
-                      ? authController.otpController.text
-                      : StringConstant.msgEmptyOtp);
-                },
-                child: const Text(StringConstant.btnVerify)),
-            ElevatedButton(
-                onPressed: () {
-                  _reSend();
-                },
-                child: const Text(StringConstant.btnResend))
+            deviceType == DeviceType.mobile
+                ? buildItemMobile()
+                : buildItemWeb(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildItemMobile() {
+    return Column(
+      children: [
+        ButtonComponent(
+            onPressed: () {
+              _submitOTP(authController.otpController.text.isNotEmpty
+                  ? authController.otpController.text
+                  : StringConstant.msgEmptyOtp);
+            },
+            context: context,
+            backgroundColor: AppColors.blueColor,
+            text: StringConstant.btnVerify),
+        CommonStyle.verticalSpace(context, 0.025),
+        ButtonComponent(
+          onPressed: () {
+            _reSend();
+          },
+          backgroundColor: AppColors.blueColor,
+          context: context,
+          text: StringConstant.btnResend,
+        )
+      ],
+    );
+  }
+
+  Widget buildItemWeb() {
+    return Row(
+      children: [
+        Expanded(
+          child: ButtonComponent(
+              onPressed: () {
+                _submitOTP(authController.otpController.text.isNotEmpty
+                    ? authController.otpController.text
+                    : StringConstant.msgEmptyOtp);
+              },
+              context: context,
+              backgroundColor: AppColors.blueColor,
+              text: StringConstant.btnVerify),
+        ),
+        CommonStyle.horizontalSpace(context, 0.025),
+        Expanded(
+          child: ButtonComponent(
+            onPressed: () {
+              _reSend();
+            },
+            backgroundColor: AppColors.blueColor,
+            context: context,
+            text: StringConstant.btnResend,
+          ),
+        )
+      ],
     );
   }
 }

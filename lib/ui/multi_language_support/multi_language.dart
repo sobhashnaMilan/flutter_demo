@@ -1,4 +1,10 @@
+import 'package:flutter_demo/controllers/language_controller.dart';
+import 'package:flutter_demo/language/language_util.dart';
+import 'package:flutter_demo/models/app_language_model.dart';
+import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
+import 'package:flutter_demo/util/enum_all/enums_all.dart';
 import 'package:flutter_demo/util/import_export_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MultiLanguage extends StatefulWidget {
   const MultiLanguage({Key? key}) : super(key: key);
@@ -8,6 +14,44 @@ class MultiLanguage extends StatefulWidget {
 }
 
 class _MultiLanguageState extends State<MultiLanguage> {
+  final _languageController = Get.put(LanguageController());
+  late SharedPreferences sharedPreferences;
+
+  List<AppLanguage> appLanguageList = [];
+
+  Future<void> setAppLanguages() async {
+    appLanguageList.add(AppLanguage(LanguageCodeEnum.en.name, "English"));
+    appLanguageList.add(AppLanguage(LanguageCodeEnum.de.name, "German"));
+    appLanguageList.add(AppLanguage(LanguageCodeEnum.ar.name, "Arabic"));
+    appLanguageList.add(AppLanguage(LanguageCodeEnum.hi.name, "Hindi"));
+    _languageController.updateLanguagesFlag();
+  }
+
+  void initSharedPref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    await setAppLanguages();
+
+    String? languageCode = sharedPreferences
+            .getString(PreferenceKeys.prefKeyCurrentLanguageCode) ??
+        "";
+
+    if (languageCode.isNotEmpty) {
+      for (int i = 0; i < appLanguageList.length; i++) {
+        if (appLanguageList[i].languageCode == languageCode) {
+          _languageController.changeSelectedAppLanguage(appLanguageList[i]);
+          return;
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
   final List locale = [
     {'name': 'ENGLISH', 'locale': const Locale('en', 'US')},
     {'name': 'हिंदी', 'locale': const Locale('hi', 'IN')},
@@ -28,6 +72,7 @@ class _MultiLanguageState extends State<MultiLanguage> {
 
     return Scaffold(
       appBar: AppBarComponent.buildAppbar(
+        backColor: AppColors.blueColor,
         titleWidget: Text(
           StringConstant.btnMultiLanguage.tr,
           style: deviceType == DeviceType.mobile
@@ -49,23 +94,30 @@ class _MultiLanguageState extends State<MultiLanguage> {
               SizedBox(height: Get.height * 0.22),
               Text(
                 'welcome'.tr.toUpperCase(),
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.w900,color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(
                 'message'.tr,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 10,
               ),
               const Text(
                 'Flutter',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 30,
@@ -102,49 +154,56 @@ class _MultiLanguageState extends State<MultiLanguage> {
   }
 
   buildLanguageDialog(BuildContext context) {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-            backgroundColor: Colors.transparent,
-            contentPadding: EdgeInsets.zero,
-            elevation: 0.0,
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var d = locale[index];
-                        return Container(
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding:
+              EdgeInsets.all(MediaQuery.of(context).size.height * 0.02),
+          elevation: 0.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var d = appLanguageList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          _languageController.changeSelectedAppLanguage(d);
+                          LanguageUtil.changeLocale(d.languageCode);
+
+                          sharedPreferences.setString(
+                            PreferenceKeys.prefKeyCurrentLanguageCode,
+                            d.languageCode,
+                          );
+                          Get.back();
+                        },
+                        child: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
-                          child: GestureDetector(
-                            child: Text(d['name']),
-                            onTap: () {
-                              updateLanguage(locale[index]['locale']);
-                            },
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const Divider(
-                          color: Colors.blue,
-                        );
-                      },
-                      itemCount: locale.length),
-                ),
-              ],
-            ));
+                          child: Text(d.languageName),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider(
+                        color: Colors.blue,
+                      );
+                    },
+                    itemCount: locale.length),
+              ),
+            ],
+          ),
+        );
       },
     );
   }
-
 }

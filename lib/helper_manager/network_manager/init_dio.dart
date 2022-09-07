@@ -15,3 +15,17 @@ Dio initDio() {
 
   return dio;
 }
+
+Dio mInitDio() {
+  Dio dio = Dio(
+    BaseOptions(
+      baseUrl: ApiConstant.baseUrl + ApiConstant.prefixVersionN,
+      connectTimeout: ApiConstant.timeoutDurationNormalAPIs,
+      receiveTimeout: ApiConstant.timeoutDurationNormalAPIs,
+    ),
+  );
+
+  dio.interceptors.add(AppInterceptors());
+
+  return dio;
+}

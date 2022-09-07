@@ -35,6 +35,7 @@ class _LocationServiceState extends State<LocationService> {
               : white100Medium10TextStyle(context),
         ),
       ),
+
       body: Container(
         margin: EdgeInsets.all(Get.size.longestSide * 0.01),
         color: Colors.lightBlue,

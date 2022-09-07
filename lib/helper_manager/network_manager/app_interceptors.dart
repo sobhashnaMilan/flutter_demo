@@ -29,6 +29,7 @@ class AppInterceptors extends Interceptor {
 
   @override
   FutureOr<dynamic> onError(DioError err, ErrorInterceptorHandler handler) {
+    handler.next(err);
     return err;
 
     /// TODO -: handle errors according to requirements

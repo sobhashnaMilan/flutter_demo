@@ -1,3 +1,19 @@
+class HomeModelCustom {
+  HomeModelCustom({
+    this.data,
+  });
+
+  List<UserListModel>? data;
+
+  factory HomeModelCustom.fromJson(json) => HomeModelCustom(
+    data: List<UserListModel>.from(json.map((x) => UserListModel.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+  };
+}
+
 class UserListModel {
   UserListModel({
     this.id,
@@ -11,6 +27,7 @@ class UserListModel {
   String? email;
   String? gender;
   String? status;
+  List<UserListModel>? list;
 
   UserListModel.fromJson(dynamic json) {
     id = json['id'];

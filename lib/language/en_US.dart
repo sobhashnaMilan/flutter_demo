@@ -9,6 +9,9 @@ Map<String, String> en_US = {
   StringConstant.appName: "Agile GetX Demo",
   StringConstant.noDataFoundLabel: "No Data found",
   StringConstant.gettingDataLabel: "Getting Data...",
+  StringConstant.welcome: 'Welcome',
+  StringConstant.message: 'Multi language support',
+  StringConstant.changeLanguage: 'Change Language',
 
   /// other strings
   StringConstant.requestTimeOutMsg: "Request Timed out",
@@ -16,7 +19,7 @@ Map<String, String> en_US = {
   StringConstant.noInternetMsg: "Internet not connected",
   StringConstant.changeProfilePhotoDialogTitle: "Change Profile Photo",
   StringConstant.changeProfilePhotoDialogDesc:
-      "Select Image from gallery or capture a new one",
+  "Select Image from gallery or capture a new one",
   StringConstant.cameraDialogOption: "Camera",
   StringConstant.galleryDialogOption: "Gallery",
   StringConstant.logoutWarningMsg: "Are you sure you want to Logout?",

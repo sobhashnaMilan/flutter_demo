@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_demo/ui/style/components/button_component.dart';
+import 'package:flutter_demo/ui/style/components/outline_button_component.dart';
+import 'package:flutter_demo/ui/style/style.dart';
+import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +27,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
   @override
   void initState() {
     super.initState();
-    Logger().d( controller.name.value);
+    Logger().d(controller.name.value);
   }
 
   @override
@@ -80,31 +84,32 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: OutlinedButton(
+                        child: OutlineButtonComponent(
                           onPressed: printLog,
-                          style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  width: 2.0, color: Colors.blue)),
-                          child: const Text("Print Log"),
+                          context: context,
+                          text: 'Print Log',
+                          backgroundColor: AppColors.blueColor,
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OutlinedButton(
+                        child: OutlineButtonComponent(
                           onPressed: openDialog,
-                          style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  width: 2.0, color: Colors.blue)),
-                          child: const Text("Show Dialog"),
+                          context: context,
+                          text: 'Show Dialog',
+                          backgroundColor: AppColors.blueColor,
                         ),
                       ),
                     ],
                   ),
+                  CommonStyle.verticalSpace(context, 0.01),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: ButtonComponent(
                       onPressed: () => getData(controller.textField.value),
-                      child: const Text("Get Data"),
+                      context: context,
+                      text: 'Get Data',
+                      backgroundColor: AppColors.blueColor,
                     ),
                   ),
                 ],
@@ -121,7 +126,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
       final String result =
           await controller.platform.invokeMethod('getValue', {"text": value});
       controller.namePlatformChannels.value = result;
-      Logger().d( result);
+      Logger().d(result);
     } on PlatformException catch (e) {
       controller.namePlatformChannels.value =
           "Failed to Invoke: '${e.message}'.";
@@ -132,7 +137,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
     try {
       final String result = await controller.platform.invokeMethod('printLog');
       controller.namePlatformChannels.value = result;
-      Logger().d( result);
+      Logger().d(result);
     } on PlatformException catch (e) {
       controller.namePlatformChannels.value =
           "Failed to Invoke: '${e.message}'.";
@@ -144,7 +149,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
       final String result =
           await controller.platform.invokeMethod('openDialog');
       controller.namePlatformChannels.value = result;
-      Logger().d( result);
+      Logger().d(result);
     } on PlatformException catch (e) {
       controller.namePlatformChannels.value =
           "Failed to Invoke: '${e.message}'.";

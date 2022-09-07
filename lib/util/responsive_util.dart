@@ -7,9 +7,9 @@ class ResponsiveUtil {
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < 800;
 
-  /* static bool isTablet(BuildContext context) =>
+  static bool isTablet(BuildContext context) =>
       MediaQuery.of(context).size.width > 800 &&
-      MediaQuery.of(context).size.width < 1200;*/
+      MediaQuery.of(context).size.width < 1200;
 }
 
 enum DeviceType { desktop, mobile, tablet }

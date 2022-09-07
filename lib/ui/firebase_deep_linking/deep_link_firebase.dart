@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_demo/ui/style/components/button_component.dart';
+import 'package:flutter_demo/ui/style/style.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:flutter_demo/util/app_logger.dart';
+import 'package:flutter_demo/util/import_export_util.dart';
+import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:flutter_demo/util/snackbar_util.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +33,7 @@ class _DeepLinkFirebaseState extends State<DeepLinkFirebase>
         link: Uri.parse("https://trainingflutternew.page.link/?name=${_deepLinkController.deepLinkParameters.value}"),
         uriPrefix: "https://trainingflutternew.page.link/",
         androidParameters: const AndroidParameters(
-            packageName: "com.example.flutter_training"),
+            packageName: "com.flutter.demo.flutter_demo"),
         socialMetaTagParameters: SocialMetaTagParameters(
             description: "Deep link demo",
             imageUrl: Uri.parse("https://trainingflutternew.page.link/"),
@@ -48,6 +52,10 @@ class _DeepLinkFirebaseState extends State<DeepLinkFirebase>
 
   @override
   Widget build(BuildContext context) {
+    DeviceType deviceType = ResponsiveUtil.isMobile(context)
+        ? DeviceType.mobile
+        : DeviceType.desktop;
+
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -76,14 +84,10 @@ class _DeepLinkFirebaseState extends State<DeepLinkFirebase>
                           border: OutlineInputBorder(),
                           hintText: StringConstant.hintEnterParams),
                     ),
-                    ElevatedButton(
-                      onPressed: () => _createDynamicLink(false),
-                      child: const Text('Get Long Link'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _createDynamicLink(true),
-                      child: const Text('Get Short Link'),
-                    ),
+                    CommonStyle.verticalSpace(context, 0.01),
+                    deviceType == DeviceType.mobile
+                        ? buildItemMobile()
+                        : buildItemWeb(),
                     Obx(
                       () => InkWell(
                         onTap: () async {
@@ -115,6 +119,51 @@ class _DeepLinkFirebaseState extends State<DeepLinkFirebase>
           },
         ),
       ),
+    );
+  }
+
+
+  Widget buildItemMobile() {
+    return Column(
+      children: [
+        ButtonComponent(
+          onPressed: () => _createDynamicLink(false),
+          context: context,
+          text: 'Get Long Link',
+          backgroundColor: AppColors.blueColor,
+        ),
+        CommonStyle.verticalSpace(context, 0.025),
+        ButtonComponent(
+          onPressed: () => _createDynamicLink(true),
+          context: context,
+          text: 'Get Short Link',
+          backgroundColor: AppColors.blueColor,
+        ),
+      ],
+    );
+  }
+
+  Widget buildItemWeb() {
+    return Row(
+      children: [
+        Expanded(
+          child: ButtonComponent(
+            onPressed: () => _createDynamicLink(false),
+            context: context,
+            text: 'Get Long Link',
+            backgroundColor: AppColors.blueColor,
+          ),
+        ),
+        CommonStyle.horizontalSpace(context, 0.025),
+        Expanded(
+          child: ButtonComponent(
+            onPressed: () => _createDynamicLink(true),
+            context: context,
+            text: 'Get Short Link',
+            backgroundColor: AppColors.blueColor,
+          ),
+        )
+      ],
     );
   }
 }

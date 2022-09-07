@@ -16,7 +16,8 @@ class ApiConstant {
 
   static String get googlePlacesKey => '';
 
-  static String get googlePlaceDetail => 'https://maps.googleapis.com/maps/api/place/details/json';
+  static String get googlePlaceDetail =>
+      'https://maps.googleapis.com/maps/api/place/details/json';
 
   static String get supportEmail => "support@ezsection.com";
 
@@ -46,9 +47,12 @@ class ApiConstant {
   // static String get baseDomain => 'https://api.ezsection.com/'; // Client Live
   static String get baseDomain => 'http://202.131.117.92:7100/'; // Client Live
   static String get baseUrl => "https://gorest.co.in/";
+
   static String get baseUrlNew => "https://reqres.in/";
 
   static String get prefixVersion => "v6/";
+
+  static String get prefixVersionN => "public/v2/";
 
   static String get prefixAuth => "auth";
 
@@ -59,7 +63,7 @@ class ApiConstant {
       case ApiType.login:
         return '$prefixAuth/login';
       case ApiType.userList:
-        return '/public/v2/users';
+        return 'users';
       default:
         return "";
     }
@@ -72,9 +76,15 @@ class ApiConstant {
   * - params
   * - files
   * */
-  static Tuple4<String, Map<String, String>, Map<String, dynamic>, List<AppMultiPartFile>> requestParamsForSync(ApiType type,
-      {Map<String, dynamic>? params, List<AppMultiPartFile> arrFile = const [], String? urlParams}) {
-    String apiUrl = ApiConstant.baseDomain + ApiConstant.prefixVersion + ApiConstant.getValue(type);
+  static Tuple4<String, Map<String, String>, Map<String, dynamic>,
+          List<AppMultiPartFile>>
+      requestParamsForSync(ApiType type,
+          {Map<String, dynamic>? params,
+          List<AppMultiPartFile> arrFile = const [],
+          String? urlParams}) {
+    String apiUrl = ApiConstant.baseDomain +
+        ApiConstant.prefixVersion +
+        ApiConstant.getValue(type);
 
     if (urlParams != null) apiUrl = apiUrl + urlParams;
 
@@ -92,10 +102,16 @@ class ApiConstant {
     return Tuple4(apiUrl, headers, paramsFinal, arrFile);
   }
 
-
-  static Tuple4<String, Map<String, String>, Map<String, dynamic>, List<AppMultiPartFile>> requestParamsForSyncCustomList(ApiType type,
-      {Map<String, dynamic>? params, List<AppMultiPartFile> arrFile = const [], String? urlParams}) {
-    String apiUrl = ApiConstant.baseUrl + ApiConstant.getValue(type);
+  /// custom list
+  static Tuple4<String, Map<String, String>, Map<String, dynamic>,
+          List<AppMultiPartFile>>
+      requestParamsForSyncCustomList(ApiType type,
+          {Map<String, dynamic>? params,
+          List<AppMultiPartFile> arrFile = const [],
+          String? urlParams}) {
+    String apiUrl = ApiConstant.baseUrl +
+        ApiConstant.prefixVersionN +
+        ApiConstant.getValue(type);
 
     if (urlParams != null) apiUrl = apiUrl + urlParams;
 
