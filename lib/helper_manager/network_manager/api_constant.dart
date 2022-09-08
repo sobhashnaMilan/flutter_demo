@@ -7,7 +7,15 @@ import 'package:tuple/tuple.dart';
 enum ApiType {
   login,
   userList,
+  addUser,
   none,
+}
+
+enum MethodType {
+  get,
+  post,
+  put,
+  delete,
 }
 
 class ApiConstant {
@@ -47,7 +55,6 @@ class ApiConstant {
   // static String get baseDomain => 'https://api.ezsection.com/'; // Client Live
   static String get baseDomain => 'http://202.131.117.92:7100/'; // Client Live
   static String get baseUrl => "https://gorest.co.in/";
-
   static String get baseUrlNew => "https://reqres.in/";
 
   static String get prefixVersion => "v6/";
@@ -56,13 +63,15 @@ class ApiConstant {
 
   static String get prefixAuth => "auth";
 
-  static String get prefixApi => "api";
+  static String get prefixApi => "api/";
 
   static String getValue(ApiType type) {
     switch (type) {
       case ApiType.login:
         return '$prefixAuth/login';
       case ApiType.userList:
+        return 'users';
+      case ApiType.addUser:
         return 'users';
       default:
         return "";
@@ -102,16 +111,14 @@ class ApiConstant {
     return Tuple4(apiUrl, headers, paramsFinal, arrFile);
   }
 
-  /// custom list
+  /// custom
   static Tuple4<String, Map<String, String>, Map<String, dynamic>,
           List<AppMultiPartFile>>
-      requestParamsForSyncCustomList(ApiType type,
+      requestParamsForSyncCustom(String url, ApiType type,
           {Map<String, dynamic>? params,
           List<AppMultiPartFile> arrFile = const [],
           String? urlParams}) {
-    String apiUrl = ApiConstant.baseUrl +
-        ApiConstant.prefixVersionN +
-        ApiConstant.getValue(type);
+    String apiUrl = url + ApiConstant.getValue(type);
 
     if (urlParams != null) apiUrl = apiUrl + urlParams;
 

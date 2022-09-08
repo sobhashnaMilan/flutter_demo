@@ -1,7 +1,5 @@
+import 'package:flutter_demo/models/add_user_model.dart';
 import 'package:flutter_demo/models/user_list_model.dart';
-
-import '../../models/home_model.dart';
-import '../../models/user_model.dart';
 
 class ResponseModel<T> {
   ResponseModel({required this.status, required this.message, this.data});
@@ -21,12 +19,10 @@ class ResponseModel<T> {
   }
 
   T _handleClasses(json) {
-    if (T == UserModel) {
-      return UserModel.fromJson(json) as T;
-    } else if (T == HomeModel) {
-      return HomeModel.fromJson(json) as T;
-    } else if (T == HomeModelCustom) {
+    if (T == HomeModelCustom) {
       return HomeModelCustom.fromJson(json) as T;
+    } else if (T == AddUser) {
+      return AddUser.fromJson(json) as T;
     } else {
       throw Exception('Unknown class');
     }

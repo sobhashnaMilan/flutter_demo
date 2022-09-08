@@ -16,10 +16,10 @@ Dio initDio() {
   return dio;
 }
 
-Dio mInitDio() {
+Dio mInitDio(String url) {
   Dio dio = Dio(
     BaseOptions(
-      baseUrl: ApiConstant.baseUrl + ApiConstant.prefixVersionN,
+      baseUrl: url,
       connectTimeout: ApiConstant.timeoutDurationNormalAPIs,
       receiveTimeout: ApiConstant.timeoutDurationNormalAPIs,
     ),

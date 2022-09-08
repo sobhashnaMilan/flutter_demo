@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
           getPages: AppRoutes.routes,
           // initialBinding: PlatformChannelsBinding(),
           // initialRoute: ScreenRoutesConstant.loginScreen,
-          textDirection: TextDirection.ltr,
           initialRoute: ScreenRoutesConstant.homeScreen,
           translations: LanguageUtil(),
           locale: currentLocale,

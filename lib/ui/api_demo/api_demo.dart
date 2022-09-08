@@ -132,7 +132,7 @@ class _ApiDemoState extends State<ApiDemo> {
         },
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 5.5,
+          childAspectRatio: 5,
         ),
       ),
     );
@@ -168,6 +168,7 @@ class _ApiDemoState extends State<ApiDemo> {
 
   Future<void> homeDataAPICall({bool pullToRefresh = false}) async {
     await controller.homeDataAPICall(
+      mContext: context,
       requestParams: null,
       pullToRefresh: pullToRefresh,
       onError: (msg) => SnackbarUtil.showSnackbar(
@@ -176,6 +177,16 @@ class _ApiDemoState extends State<ApiDemo> {
         message: msg,
       ),
     );
+  }
+
+  /// add user api call [Post Method]
+
+  Future<void> homeAddDataAPICall({bool pullToRefresh = false}) async {
+    await controller.homeAddDataAPICall(
+        mContext: context,
+        requestParams: null,
+        pullToRefresh: pullToRefresh,
+        onError: (msg) {});
   }
 
   /// add user list api call [Post Method]
@@ -189,12 +200,15 @@ class _ApiDemoState extends State<ApiDemo> {
         child: ButtonComponent(
           context: context,
           backgroundColor: AppColors.blueColor,
-          onPressed: () {},
+          onPressed: () {
+            homeAddDataAPICall(pullToRefresh: false);
+          },
           text: "add User",
         ),
       ),
     );
   }
+
 /*userAddAPICall() {
     isNetworkConnected().then(
       (connection) {

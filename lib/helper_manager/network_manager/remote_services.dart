@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import '../../helper_manager/network_manager/api_constant.dart';
 import '../../helper_manager/network_manager/init_dio.dart';
 import '../../models/response_model.dart';
@@ -11,12 +13,12 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 
 import '../../util/network_util.dart';
+import '../../util/snackbar_util.dart';
 
 var sharedServiceManager = RemoteServices.singleton;
 
 class RemoteServices {
   static var dio = initDio();
-  static var mDio = mInitDio();
 
   RemoteServices._internal();
 
@@ -26,21 +28,74 @@ class RemoteServices {
     return singleton;
   }
 
+  ///  Custom requests
+  Future<Response?> createCustomRequest<T>(
+      {required String baseUrl,required BuildContext mContext,
+      required ApiType typeOfEndPoint,
+      required MethodType typeOfMethod,
+      Map<String, dynamic>? params,
+      String? urlParam}) async {
+
+    if (await NetworkUtil.isNetworkConnected()) {
+      final requestFinal = ApiConstant.requestParamsForSyncCustom(
+          baseUrl, typeOfEndPoint,
+          params: params, urlParams: urlParam);
+      var mDio = mInitDio(baseUrl);
+      try {
+        Response response;
+        switch (typeOfMethod) {
+          case MethodType.get:
+            response = await mDio.get(requestFinal.item1,
+                options: Options(headers: requestFinal.item2));
+            break;
+          case MethodType.post:
+            response = await dio.post(requestFinal.item1,
+                data: requestFinal.item3,
+                options: Options(headers: requestFinal.item2));
+            break;
+          case MethodType.put:
+            response = await mDio.put(requestFinal.item1,
+                options: Options(headers: requestFinal.item2));
+            break;
+          case MethodType.delete:
+            response = await mDio.delete(requestFinal.item1,
+                options: Options(headers: requestFinal.item2));
+            break;
+        }
+
+        return response;
+      } on DioError catch (e) {
+        SnackbarUtil.showSnackbar(
+          context: mContext,
+          type: SnackType.error,
+          message: e.message,
+        );
+        return null;
+      }
+    } else {
+      SnackbarUtil.showSnackbar(
+        context: mContext,
+        type: SnackType.error,
+        message: StringConstant.noInternetMsg,
+      );
+      return null;
+    }
+  }
+
   /// GET requests
   Future<ResponseModel<T>> createGetRequest<T>(
       {required ApiType typeOfEndPoint,
       Map<String, dynamic>? params,
       String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSync(
-          typeOfEndPoint,
-          params: params,
-          urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint,
+          params: params, urlParams: urlParam);
 
       try {
         Response response = await dio.get(requestFinal.item1,
             options: Options(headers: requestFinal.item2));
-        final Map<String, dynamic> responseJson = json.decode(response.data.toString());
+        final Map<String, dynamic> responseJson =
+            json.decode(response.data.toString());
         return ResponseModel<T>.fromJson(responseJson, response.statusCode!);
       } on DioError catch (e) {
         return createErrorResponse(
@@ -54,7 +109,7 @@ class RemoteServices {
   }
 
   /// GET requests custom
-  Future<ResponseModel<T>> createGetRequestCustom<T>(
+  /*Future<ResponseModel<T>> createGetRequestCustom<T>(
       {required ApiType typeOfEndPoint,
       Map<String, dynamic>? params,
       String? urlParam}) async {
@@ -65,6 +120,7 @@ class RemoteServices {
           urlParams: urlParam);
 
       try {
+        var mDio = mInitDio();
         Response response = await mDio.get(requestFinal.item1,
             options: Options(headers: requestFinal.item2));
         // var d = ResponseModel(status: 2,message: "good",data: response.data);
@@ -80,7 +136,7 @@ class RemoteServices {
           status: ApiConstant.statusCodeServiceNotAvailable,
           message: StringConstant.noInternetMsg);
     }
-  }
+  }*/
 
   /// POST requests
   Future<ResponseModel<T>> createPostRequest<T>(
@@ -88,10 +144,8 @@ class RemoteServices {
       Map<String, dynamic>? params,
       String? urlParam}) async {
     if (await NetworkUtil.isNetworkConnected()) {
-      final requestFinal = ApiConstant.requestParamsForSyncCustomList(
-          typeOfEndPoint,
-          params: params,
-          urlParams: urlParam);
+      final requestFinal = ApiConstant.requestParamsForSync(typeOfEndPoint,
+          params: params, urlParams: urlParam);
       /*
       * item1 => API End-Point
       * item2 => Header
@@ -100,7 +154,7 @@ class RemoteServices {
       * */
       try {
         // Response response = await dio.post(requestFinal.item1, data: requestFinal.item3, options: Options(headers: requestFinal.item2));
-        Response response = await mDio.post(requestFinal.item1,
+        Response response = await dio.post(requestFinal.item1,
             data: requestFinal.item3,
             options: Options(headers: requestFinal.item2));
 
