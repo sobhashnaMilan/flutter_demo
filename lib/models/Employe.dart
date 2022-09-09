@@ -1,17 +1,24 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonSerializable()
-class Emplpye {
-  /// The generated code assumes these values exist in JSON.
-  final String firstName, lastName;
+part 'Employe.g.dart';
 
-  Emplpye({required this.firstName, required this.lastName});
+@JsonSerializable()
+class Employee {
+  /// The generated code assumes these values exist in JSON.
+
+  @JsonKey(name: "firstName")
+  final String fName;
+  @JsonKey(name: "lastName")
+  final String lName;
+
+  Employee({required this.fName, required this.lName});
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`
   /// factory.
-  factory Emplpye.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  factory Employee.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeFromJson(json);
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$PersonToJson(this);
+  Map<String, dynamic> toJson() => _$EmployeeToJson(this);
 }
-
