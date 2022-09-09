@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../helper_manager/network_manager/api_constant.dart';
 import '../../helper_manager/network_manager/init_dio.dart';
-import '../../models/response_model.dart';
+import '../../models/base/response_model.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 import '../../util/app_logger.dart';
 import 'package:dio/dio.dart';

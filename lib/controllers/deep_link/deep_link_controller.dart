@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../util/app_common_stuffs/string_constants.dart';
+import '../../util/app_common_stuffs/string_constants.dart';
 
 class DeepLinkController extends GetxController {
   /// variable

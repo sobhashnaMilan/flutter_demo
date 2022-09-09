@@ -13,7 +13,7 @@ import 'package:flutter_demo/util/snackbar_util.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../controllers/deep_link_controller.dart';
+import '../../controllers/deep_link/deep_link_controller.dart';
 
 class DeepLinkFirebase extends StatefulWidget {
   const DeepLinkFirebase({Key? key}) : super(key: key);

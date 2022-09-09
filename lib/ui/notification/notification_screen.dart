@@ -1,10 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/service/fcm/notification_service.dart';
 import 'package:flutter_demo/ui/style/style.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
-import '../../fcm/notification_service.dart';
 import '../../util/app_common_stuffs/colors.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 import '../../util/app_logger.dart';

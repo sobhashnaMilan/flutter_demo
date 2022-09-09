@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/ui/notification/notification_screen.dart';
+import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
-import '../ui/notification/notification_screen.dart';
-import '../util/app_logger.dart';
 
 class NotificationService extends Object {
   static final NotificationService _singleton = NotificationService._internal();

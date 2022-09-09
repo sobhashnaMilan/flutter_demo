@@ -1,6 +1,6 @@
 import 'package:flutter_demo/util/import_export_util.dart';
 
-import '../../controllers/api_demo_controller.dart';
+import '../../controllers/api_demo/api_demo_controller.dart';
 import '../../util/remove_glow_effect.dart';
 import '../common/home_screen.dart';
 

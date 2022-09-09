@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../controllers/location_controller.dart';
+import '../../controllers/location/location_controller.dart';
 import '../../util/responsive_util.dart';
 import '../style/components/app_bar_component.dart';
 import '../style/text_styles.dart';

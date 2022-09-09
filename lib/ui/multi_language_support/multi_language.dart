@@ -1,6 +1,6 @@
-import 'package:flutter_demo/controllers/language_controller.dart';
+import 'package:flutter_demo/controllers/language/language_controller.dart';
 import 'package:flutter_demo/language/language_util.dart';
-import 'package:flutter_demo/models/app_language_model.dart';
+import 'package:flutter_demo/models/app_language/app_language_model.dart';
 import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
 import 'package:flutter_demo/util/enum_all/enums_all.dart';
 import 'package:flutter_demo/util/import_export_util.dart';

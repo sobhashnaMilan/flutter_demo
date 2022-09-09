@@ -5,7 +5,7 @@ import 'package:flutter_demo/ui/style/style.dart';
 import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/auth_controller.dart';
+import '../../controllers/auth/auth_controller.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 
 class OtpLogin extends StatefulWidget {

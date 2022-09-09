@@ -1,5 +1,5 @@
-import 'package:flutter_demo/models/add_user_model.dart';
-import 'package:flutter_demo/models/user_list_model.dart';
+import 'package:flutter_demo/models/add_user/add_user_model.dart';
+import 'package:flutter_demo/models/user_list/user_list_model.dart';
 
 class ResponseModel<T> {
   ResponseModel({required this.status, required this.message, this.data});

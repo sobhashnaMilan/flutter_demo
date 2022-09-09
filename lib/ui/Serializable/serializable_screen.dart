@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/models/Employe.dart';
+import 'package:flutter_demo/models/employee/Employe.dart';
 import 'package:flutter_demo/util/app_logger.dart';
 
 class SerializableClass extends StatefulWidget {

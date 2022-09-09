@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '../../bindings/common/home_binding.dart';
-import '../../bindings/platform_channels_binding.dart';
+import '../../bindings/platform_channels/platform_channels_binding.dart';
 import '../../ui/common/home_screen.dart';
 import '../../ui/common/splash_screen.dart';
 import '../../ui/notification/notification_screen.dart';

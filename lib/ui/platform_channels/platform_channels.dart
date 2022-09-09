@@ -7,7 +7,7 @@ import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/PlatformChannelsController.dart';
+import '../../controllers/platform_channels/PlatformChannelsController.dart';
 import '../../util/app_logger.dart';
 import '../../util/responsive_util.dart';
 import '../style/components/app_bar_component.dart';

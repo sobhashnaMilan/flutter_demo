@@ -6,7 +6,7 @@ import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/auth_controller.dart';
+import '../../controllers/auth/auth_controller.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 import '../../util/app_logger.dart';
 import 'otp_login.dart';

@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as map_location;
 import 'package:location/location.dart';
 
-import '../util/app_logger.dart';
+import '../../util/app_logger.dart';
 
 class LocationController extends GetxController {
   var location = map_location.Location();

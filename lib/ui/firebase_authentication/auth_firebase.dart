@@ -4,7 +4,7 @@ import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/auth_controller.dart';
+import '../../controllers/auth/auth_controller.dart';
 import '../../util/responsive_util.dart';
 import '../style/components/app_bar_component.dart';
 import '../style/text_styles.dart';

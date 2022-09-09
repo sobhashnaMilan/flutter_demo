@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_demo/models/Employe.dart';
+import 'package:flutter_demo/models/employee/Employe.dart';
 import 'package:flutter_demo/ui/Serializable/serializable_screen.dart';
 import 'package:flutter_demo/util/import_export_util.dart';
 
