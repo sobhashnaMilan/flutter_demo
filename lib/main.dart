@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_demo/service/fcm/notification_service.dart';
 import 'package:flutter_demo/util/app_logger.dart';
-import 'bindings/platform_channels/platform_channels_binding.dart';
 import 'firebase_options.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/services.dart';

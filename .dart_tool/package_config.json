@@ -950,6 +950,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "socket_io_client",
+      "rootUri": "file:///E:/flutter_sdk/flutter_windows_3.0.5-stable/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_client-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "socket_io_common",
+      "rootUri": "file:///E:/flutter_sdk/flutter_windows_3.0.5-stable/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_common-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "source_gen",
       "rootUri": "file:///E:/flutter_sdk/flutter_windows_3.0.5-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_gen-1.2.2",
       "packageUri": "lib/",
@@ -1154,7 +1166,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-09-09T08:28:01.152785Z",
+  "generated": "2022-09-15T03:40:26.332161Z",
   "generator": "pub",
   "generatorVersion": "2.18.0"
 }

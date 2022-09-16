@@ -41,35 +41,44 @@ class TextFieldComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: textEditingController,
-      enabled: enabled,
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: deviceType == DeviceType.mobile ? hintTextStyle(context) : hintTextStyleDesktop(context),
-        counterText: '',
-        suffixIcon: iconSuffix,
-        contentPadding: EdgeInsets.all(
-          deviceType == DeviceType.mobile
-              ? MediaQuery.of(context).size.longestSide * 0.02
-              : MediaQuery.of(context).size.longestSide * 0.008,
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        TextField(
+          controller: textEditingController,
+          enabled: enabled,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: deviceType == DeviceType.mobile
+                ? hintTextStyle(context)
+                : hintTextStyleDesktop(context),
+            counterText: '',
+            contentPadding: EdgeInsets.all(
+              deviceType == DeviceType.mobile
+                  ? MediaQuery.of(context).size.longestSide * 0.03
+                  : MediaQuery.of(context).size.shortestSide * 0.03,
+            ),
+            isDense: true,
+            enabledBorder: setEnabledBorder(),
+            disabledBorder: setDisabledBorder(),
+            focusedBorder: setFocusedBorder(),
+          ),
+          textCapitalization: capitalization,
+          style: deviceType == DeviceType.mobile
+              ? textFieldTextStyle(context)
+              : textFieldTextStyleDesktop(context),
+          textAlignVertical: TextAlignVertical.center,
+          keyboardType: textInputType,
+          textInputAction: textInputAction,
+          obscureText: obscure,
+          cursorColor: AppColors.accentColor,
+          maxLength: maxLength,
+          maxLines: maxLines,
+          onChanged: (v) => onChange == null ? null : onChange!(v),
+          onSubmitted: (v) => onSubmit == null ? null : onSubmit!(v),
         ),
-        isDense: true,
-        enabledBorder: setEnabledBorder(),
-        disabledBorder: setDisabledBorder(),
-        focusedBorder: setFocusedBorder(),
-      ),
-      textCapitalization: capitalization,
-      style: deviceType == DeviceType.mobile ? textFieldTextStyle(context) : textFieldTextStyleDesktop(context),
-      textAlignVertical: TextAlignVertical.center,
-      keyboardType: textInputType,
-      textInputAction: textInputAction,
-      obscureText: obscure,
-      cursorColor: AppColors.accentColor,
-      maxLength: maxLength,
-      maxLines: maxLines,
-      onChanged: (v) => onChange == null ? null : onChange!(v),
-      onSubmitted: (v) => onSubmit == null ? null : onSubmit!(v),
+        iconSuffix != null ? iconSuffix! : Container()
+      ],
     );
   }
 }
@@ -84,8 +93,9 @@ Widget buildLabelForTextField({
       children: [
         TextSpan(
           text: text,
-          style:
-              deviceType == DeviceType.mobile ? black100Medium18TextStyle(context) : black100Medium10TextStyle(context),
+          style: deviceType == DeviceType.mobile
+              ? black100Medium18TextStyle(context)
+              : black100Medium10TextStyle(context),
         ),
         const TextSpan(
           text: " ${StringConstant.mandatoryAsterisk}",

@@ -54,6 +54,7 @@ class ApiConstant {
   // static String get baseDomain => 'https://dev-api.ezsection.com/'; // Client Staging
   // static String get baseDomain => 'https://api.ezsection.com/'; // Client Live
   static String get baseDomain => 'http://202.131.117.92:7100/'; // Client Live
+  static String get baseDomainSocket => 'http://202.131.117.92:7100/';
   static String get baseUrl => "https://gorest.co.in/";
   static String get baseUrlNew => "https://reqres.in/";
 

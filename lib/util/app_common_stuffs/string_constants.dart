@@ -25,6 +25,53 @@ class StringConstant {
   static const String gettingDataLabel = "gettingDataLabel";
   static const String prefixForSavingFile = "flutter_agile_getx";
 
+  /// register / edit profile screen strings
+  static const String editProfileAppbarTitle = "editProfileAppbarTitle";
+  static const String firstNameFieldLabel = "firstNameFieldLabel";
+  static const String lastNameFieldLabel = "lastNameFieldLabel";
+  static const String firstNameFieldHint = "firstNameFieldHint";
+  static const String lastNameFieldHint = "lastNameFieldHint";
+  static const String bioFieldLabel = "bioFieldLabel";
+  static const String bioFieldHint = "bioFieldHint";
+  static const String mobileNoFieldLabel = "mobileNoFieldLabel";
+  static const String genderFieldLabel = "genderFieldLabel";
+  static const String mobileNoFieldHint = "mobileNoFieldHint";
+  static const String updateBtnLabel = "updateBtnLabel";
+  static const String confirmPasswordFieldLabel = "confirmPasswordFieldLabel";
+  static const String confirmPasswordFieldHint = "confirmPasswordFieldHint";
+  static const String alreadyHaveAnAccountLabel = "alreadyHaveAnAccountLabel";
+  static const String loginLabel = "loginLabel";
+  static const String registerBtnLabel = "registerBtnLabel";
+  static const String enterFirstNameValidation = "enterFirstNameValidation";
+  static const String enterLastNameValidation = "enterLastNameValidation";
+  static const String enterBioValidation = "enterBioValidation";
+  static const String enterValidFirstNameValidation = "enterValidFirstNameValidation";
+  static const String enterValidLastNameValidation = "enterValidLastNameValidation";
+  static const String enterValidBioValidation = "enterValidBioValidation";
+  static const String enterMobileNoValidation = "enterMobileNoValidation";
+  static const String enterValidMobileNoValidation = "enterValidMobileNoValidation";
+  static const String reEnterPasswordValidation = "reEnterPasswordValidation";
+  static const String passwordsNotMatchValidation = "passwordsNotMatchValidation";
+  static const String signupHeadingLabel = "signupHeadingLabel";
+  static const String userCancelledImageSelectionMsg = "userCancelledImageSelectionMsg";
+
+  /// login screen strings
+  static const String loginTitle = "loginTitle";
+  static const String emailFieldLabel = "emailFieldLabel";
+  static const String emailFieldHint = "emailFieldHint";
+  static const String passwordFieldLabel = "passwordFieldLabel";
+  static const String passwordFieldHint = "passwordFieldHint";
+  static const String enterEmailIDFieldValidation = "enterEmailIDFieldValidation";
+  static const String enterValidEmailIDFieldValidation = "enterValidEmailIDFieldValidation";
+  static const String enterPasswordFieldValidation = "enterPasswordFieldValidation";
+  static const String passwordLengthValidation = "passwordLengthValidation";
+  static const String loginButtonLabel = "loginButtonLabel";
+  static const String dontHaveAnAccountLabel = "dontHaveAnAccountLabel";
+  static const String signupLabel = "signupLabel";
+  static const String loginSuccessMsg = "loginSuccessMsg";
+  static const String loggingInLabel = "loggingInLabel";
+  static const String testChatModuleLabel = "testChatModuleLabel";
+
   /// common getX strings
   static const String appName = 'Flutter Training';
   static const String googleMapKey = 'AIzaSyAjsXTOIBrQtkiV-GYl2u9gi_B0w-d0b0Y';
@@ -58,6 +105,7 @@ class StringConstant {
   static const String btnNotification = 'Notification';
   static const String btnNavigator = 'Navigator';
   static const String btnEquatableDemo = 'EquatableDemo';
+  static const String btnChat = 'Chat';
   static const String btnAddUser = 'add user';
   static const String btnOk = 'OK';
   static const String btnVerify = 'Verify';

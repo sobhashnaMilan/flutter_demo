@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Employe.g.dart';
@@ -15,8 +13,6 @@ class Employee {
 
   Employee({required this.fName, required this.lName});
 
-  /// Connect the generated [_$PersonFromJson] function to the `fromJson`
-  /// factory.
   factory Employee.fromJson(Map<String, dynamic> json) =>
       _$EmployeeFromJson(json);
 

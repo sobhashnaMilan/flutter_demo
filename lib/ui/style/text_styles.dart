@@ -29,7 +29,7 @@ TextStyle textFieldTextStyle(context) {
 TextStyle textFieldTextStyleDesktop(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.008,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.012,
     color:AppColors.blackColor.withOpacity(0.90),
   );
 }

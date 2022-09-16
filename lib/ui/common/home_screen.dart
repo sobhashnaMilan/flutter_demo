@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/ui/chat/login_screen.dart';
 import 'package:flutter_demo/ui/style/components/app_bar_component.dart';
 import 'package:flutter_demo/ui/style/components/button_component.dart';
 import 'package:flutter_demo/ui/style/text_styles.dart';
@@ -123,6 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
               context: context,
               onPressed: () => Get.to(const EquatableDemo()),
               text: StringConstant.btnEquatableDemo),
+          ButtonComponent(
+              backgroundColor: AppColors.blueColor,
+              context: context,
+              onPressed: () => Get.toNamed(ScreenRoutesConstant.loginScreen),
+              text: StringConstant.btnChat),
         ],
       ),
     );

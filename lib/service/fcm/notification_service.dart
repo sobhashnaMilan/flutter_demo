@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/ui/notification/notification_screen.dart';
+import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
 import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends Object {
   static final NotificationService _singleton = NotificationService._internal();
@@ -28,7 +29,7 @@ class NotificationService extends Object {
   }
 
   NotificationService._internal() {
-    Logger().d( "💣 😀 =====> Firebase Messaging instance created");
+    Logger().d("💣 😀 =====> Firebase Messaging instance created");
     _fireBaseMessaging = FirebaseMessaging.instance;
     _fireBaseMessaging.setAutoInitEnabled(true);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -37,12 +38,12 @@ class NotificationService extends Object {
 
   Future<void> firebaseCloudMessagingListeners() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Logger().d( "💣 😀 =====> onMessageOpenedApp: $message");
+      Logger().d("💣 😀 =====> onMessageOpenedApp: $message");
       displayNotificationView(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      Logger().d( "💣 😀 =====> onMessageOpenedApp: $message");
+      Logger().d("💣 😀 =====> onMessageOpenedApp: $message");
       displayNotificationView(message);
     });
   }
@@ -58,8 +59,9 @@ class NotificationService extends Object {
     ///
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     /// Update the iOS foreground notification presentation options to allow
@@ -77,12 +79,14 @@ class NotificationService extends Object {
     try {
       String? token = await _fireBaseMessaging.getToken();
       if (token != null && token.isNotEmpty) {
-        Logger().d( "💣 😀 =====> FCM Token :: $token");
+        Logger().d("💣 😀 =====> FCM Token :: $token");
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString(PreferenceKeys.prefKeyToken, token);
         _fcmToken = token;
       }
       return _fcmToken;
     } catch (e) {
-      Logger().d( "💣 😀 =====> Error :: ${e.toString()}");
+      Logger().d("💣 😀 =====> Error :: ${e.toString()}");
       return null;
     }
   }
@@ -108,8 +112,8 @@ class NotificationService extends Object {
       body = notification.body ?? body;
     }
 
-    Logger().d( "💣 😀 =====> Display notification view");
-    Logger().d( "💣 😀 =====> channel id ${channel.id}");
+    Logger().d("💣 😀 =====> Display notification view");
+    Logger().d("💣 😀 =====> channel id ${channel.id}");
 
     flutterLocalNotificationsPlugin.show(
         generateRandom(),
@@ -128,7 +132,7 @@ class NotificationService extends Object {
           android: AndroidInitializationSettings('app_icon'),
           iOS: IOSInitializationSettings()),
       onSelectNotification: (payload) {
-        Logger().d( "💣 😀 =====> arguments -> $payload");
+        Logger().d("💣 😀 =====> arguments -> $payload");
         Get.to(const NotificationScreen(), arguments: [body]);
       },
     );

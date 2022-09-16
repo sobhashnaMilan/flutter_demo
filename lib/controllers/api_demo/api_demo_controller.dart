@@ -5,12 +5,11 @@ import 'package:flutter_demo/helper_manager/network_manager/remote_services.dart
 import 'package:flutter_demo/models/add_user/add_user_model.dart';
 import 'package:flutter_demo/models/base/response_model.dart';
 import 'package:flutter_demo/models/user_list/user_list_model.dart';
-import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
 import 'package:flutter_demo/util/app_logger.dart';
 import 'package:get/get.dart';
 
 class ApiDemoController extends GetxController {
-  // var userList = <UserModel>[].obs;
+  // var userList = <UserModel>[]. ;
   var isDataLoading = false.obs, homeDataList = <UserListModel>[].obs;
   HomeModelCustom? homeModel;
   AddUser? addUser;
@@ -43,11 +42,11 @@ class ApiDemoController extends GetxController {
       var d = {"data": response.data, "status": 200, "message": "good"};
       var data =
           ResponseModel<HomeModelCustom>.fromJson(d, response.statusCode!);
-      Logger().d("TAG Data = > ${data}");
+      Logger().d("TAG Data = > $data");
       if (data.status == ApiConstant.statusCodeSuccess) {
         homeDataList.clear();
         homeModel = data.data;
-        homeDataList.value.addAll(homeModel?.data! ?? []);
+        homeDataList.addAll(homeModel?.data! ?? []);
         update(homeDataList);
       }
     }
@@ -78,10 +77,10 @@ class ApiDemoController extends GetxController {
     if (response != null) {
       var mData = {"data": response.data, "status": 200, "message": "good"};
       var data = ResponseModel<AddUser>.fromJson(mData, response.statusCode!);
-      Logger().d("TAG Data = > ${data}");
+      Logger().d("TAG Data = > $data");
       if (data.status == ApiConstant.statusCodeSuccess) {
         addUser = data.data;
-        homeDataList.value.add(UserListModel(
+        homeDataList.add(UserListModel(
             id: int.parse(addUser!.id ?? ""),
             name: addUser!.name,
             email: "${addUser!.name}@gmail.com",
@@ -92,30 +91,4 @@ class ApiDemoController extends GetxController {
     }
   }
 
-/*userAddAPICall({
-    required name,
-    required job,
-    required onSuccess,
-    required onError,
-    required onRequestTimeOut,
-  }) async {
-    try {
-      http.Response result = await ApiManager.userAddAPICall(
-        name: name,
-        job: job,
-        onRequestTimeOut: onRequestTimeOut,
-      );
-      if (result.statusCode == created) {
-        var response = jsonDecode(result.body);
-        Logger().d( "Response -> $response");
-        onSuccess("SUCCESS");
-      } else {
-        var response = jsonDecode(result.body);
-        onError(response['message']);
-      }
-    } catch (e) {
-      Logger().d( "Error -> $e");
-      onError(AppString().msgSomethingWrong);
-    }
-  }*/
 }

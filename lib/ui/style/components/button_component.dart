@@ -34,7 +34,7 @@ class ButtonComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       height: deviceType == DeviceType.mobile
-          ? MediaQuery.of(context).size.longestSide * 0.065
+          ? MediaQuery.of(context).size.shortestSide * 0.065
           : MediaQuery.of(context).size.longestSide * 0.03,
       child: MaterialButton(
         elevation: elevation,
