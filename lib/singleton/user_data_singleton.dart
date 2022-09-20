@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../util/app_common_stuffs/preference_keys.dart';
+import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var userDataSingleton = UserDataSingleton.singleton;
@@ -173,18 +173,18 @@ class Location {
   List<double> coordinates = <double>[];
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-        type: json["type"],
-        index: json["index"],
-        coordinates: List<double>.from(
-          json["coordinates"].map(
+    type: json["type"],
+    index: json["index"],
+    coordinates: List<double>.from(
+      json["coordinates"].map(
             (x) => x.toDouble(),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 
   Map<String, dynamic> toJson() => {
-        "type": type,
-        "index": index,
-        "coordinates": List<double>.from(coordinates.map((x) => x)),
-      };
+    "type": type,
+    "index": index,
+    "coordinates": List<double>.from(coordinates.map((x) => x)),
+  };
 }

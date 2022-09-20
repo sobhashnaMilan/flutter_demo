@@ -12,6 +12,7 @@ import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
 import 'package:flutter_demo/util/app_common_stuffs/screen_routes.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
+import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:flutter_demo/util/snackbar_util.dart';
 import 'package:flutter_demo/util/string_extensions.dart';
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildDontHaveAnAccountSection(DeviceType type) {
+  Widget buildDoNotHaveAnAccountSection(DeviceType type) {
     return SizedBox(
       height: CommonStyle.setDynamicHeight(context: context, value: 0.035),
       child: Center(
@@ -329,7 +330,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           type == DeviceType.mobile ? 0.035 : 0.025,
         ),
-        buildDontHaveAnAccountSection(
+        buildDoNotHaveAnAccountSection(
           ResponsiveUtil.isMobile(context)
               ? DeviceType.mobile
               : DeviceType.desktop,
@@ -444,7 +445,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Map<String, dynamic> requestParams = {};
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String fcmToken = preferences.getString(PreferenceKeys.prefKeyToken) ?? "";
-
+    if (fcmToken.isEmpty) fcmToken = "121212121";
     requestParams['email'] = controller.emailTextController.text;
     requestParams['deviceType'] = "android";
     requestParams['deviceId'] = "121212";
@@ -457,14 +458,15 @@ class _LoginScreenState extends State<LoginScreen> {
       onError: (msg) => SnackbarUtil.showSnackbar(
         context: context,
         type: SnackType.error,
-        message: msg,
+        message: "msg",
       ),
     );
 
     if (loginResult) {
       // ignore: use_build_context_synchronously
       SocketManager.connectToServer();
-      Get.off(ScreenRoutesConstant.chatScreen);
+      Logger().d("message");
+      Get.offNamed(ScreenRoutesConstant.chatScreen);
     }
   }
 }

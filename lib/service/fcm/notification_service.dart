@@ -7,6 +7,7 @@ import 'package:flutter_demo/util/app_common_stuffs/preference_keys.dart';
 import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends Object {
