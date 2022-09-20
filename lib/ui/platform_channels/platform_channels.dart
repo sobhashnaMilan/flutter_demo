@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_demo/ui/style/components/button_component.dart';
-import 'package:flutter_demo/ui/style/components/outline_button_component.dart';
 import 'package:flutter_demo/ui/style/style.dart';
 import 'package:flutter_demo/util/app_common_stuffs/colors.dart';
 import 'package:flutter_demo/util/app_common_stuffs/string_constants.dart';
@@ -84,7 +83,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: OutlineButtonComponent(
+                        child: ButtonComponent(
                           onPressed: printLog,
                           context: context,
                           text: 'Print Log',
@@ -93,7 +92,7 @@ class _PlatformChannelsScreenState extends State<PlatformChannelsScreen> {
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OutlineButtonComponent(
+                        child: ButtonComponent(
                           onPressed: openDialog,
                           context: context,
                           text: 'Show Dialog',
