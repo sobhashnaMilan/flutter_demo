@@ -8,5 +8,6 @@ class ScreenRoutesConstant {
 // auth related screens
   static const String loginScreen = "/loginScreen";
   static const String signupScreen = "/signupScreen";
-  static const String chatScreen = "/chatScreen";
+  static const String userListScreen = "/userListScreen";
+  static const String chatListScreen = "/chatListScreen";
 }

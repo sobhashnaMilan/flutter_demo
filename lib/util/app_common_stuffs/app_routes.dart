@@ -1,7 +1,10 @@
 import 'package:flutter_demo/bindings/authentication/login_binding.dart';
 import 'package:flutter_demo/bindings/authentication/signup_binding.dart';
-import 'package:flutter_demo/ui/chat/chat_screen.dart';
+import 'package:flutter_demo/bindings/chat/chat_list/chat_list_screen.dart';
+import 'package:flutter_demo/bindings/chat/user_list/user_list_binding.dart';
+import 'package:flutter_demo/ui/chat/chat_list_screen.dart';
 import 'package:flutter_demo/ui/chat/signup_screen.dart';
+import 'package:flutter_demo/ui/chat/user_list_screen.dart';
 import 'package:get/get.dart';
 import '../../bindings/common/home_binding.dart';
 import '../../bindings/platform_channels/platform_channels_binding.dart';
@@ -29,8 +32,14 @@ class AppRoutes {
       binding: SignupBinding(),
     ),
     GetPage(
-      name: ScreenRoutesConstant.chatScreen,
-      page: () => const ChatScreen(),
+      name: ScreenRoutesConstant.userListScreen,
+      page: () => const UserListScreen(),
+      binding: UserListBinding()
+    ),
+    GetPage(
+      name: ScreenRoutesConstant.chatListScreen,
+      page: () => const ChatListScreen(),
+      binding: ChatListBinding()
     ),
     GetPage(
       name: ScreenRoutesConstant.homeScreen,

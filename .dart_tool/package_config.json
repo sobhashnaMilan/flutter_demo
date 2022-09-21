@@ -951,13 +951,13 @@
     },
     {
       "name": "socket_io_client",
-      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_client-2.0.0",
+      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_client-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "socket_io_common",
-      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_common-2.0.0",
+      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_common-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -1166,7 +1166,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-09-20T08:46:46.291011Z",
+  "generated": "2022-09-21T03:30:57.828550Z",
   "generator": "pub",
   "generatorVersion": "2.18.1"
 }

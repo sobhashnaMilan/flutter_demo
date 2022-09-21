@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/bindings/authentication/signup_binding.dart';
 import 'package:flutter_demo/controllers/auth/login_controller.dart';
 import 'package:flutter_demo/helper_manager/socket_manager/socket_manager.dart';
+import 'package:flutter_demo/singleton/user_data_singleton.dart';
 import 'package:flutter_demo/ui/chat/signup_screen.dart';
 import 'package:flutter_demo/ui/style/components/button_component.dart';
 import 'package:flutter_demo/ui/style/components/textfield_component.dart';
@@ -48,9 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: buildBodySection(
-          ResponsiveUtil.isMobile(context)
-              ? DeviceType.mobile
-              : DeviceType.desktop,
+          ResponsiveUtil.isMobile(context) ? DeviceType.mobile : DeviceType.desktop,
         ),
       ),
     );
@@ -72,14 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             child: Padding(
               padding: EdgeInsets.only(
-                top:
-                    CommonStyle.setDynamicHeight(context: context, value: 0.06),
-                bottom:
-                    CommonStyle.setDynamicHeight(context: context, value: 0.06),
+                top: CommonStyle.setDynamicHeight(context: context, value: 0.06),
+                bottom: CommonStyle.setDynamicHeight(context: context, value: 0.06),
               ),
-              child: type == DeviceType.mobile
-                  ? buildMobileBodyLogin(type)
-                  : buildWebBodyLogin(type),
+              child: type == DeviceType.mobile ? buildMobileBodyLogin(type) : buildWebBodyLogin(type),
               // child: buildMobileBodyLogin(type),
             ),
           ),
@@ -97,29 +92,19 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: CommonStyle.setDynamicHeight(
-                  context: context,
-                  value: type == DeviceType.mobile ? 0.13 : 0.017),
-              width: CommonStyle.setDynamicWidth(
-                  context: context,
-                  value: type == DeviceType.mobile ? 0.3 : 0.017),
+              height: CommonStyle.setDynamicHeight(context: context, value: type == DeviceType.mobile ? 0.13 : 0.017),
+              width: CommonStyle.setDynamicWidth(context: context, value: type == DeviceType.mobile ? 0.3 : 0.017),
               child: Image.network(
                 "https://raw.githubusercontent.com/sobhashnaMilan/image/main/flutter_icon.png",
               ),
             ),
-            type == DeviceType.mobile
-                ? CommonStyle.verticalSpace(context, 0.01)
-                : CommonStyle.verticalSpace(context, 0.035),
+            type == DeviceType.mobile ? CommonStyle.verticalSpace(context, 0.01) : CommonStyle.verticalSpace(context, 0.035),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: CommonStyle.setDynamicHeight(
-                      context: context,
-                      value: type == DeviceType.mobile ? 0.1 : 0.011),
-                  width: CommonStyle.setDynamicWidth(
-                      context: context,
-                      value: type == DeviceType.mobile ? 0.2 : 0.019),
+                  height: CommonStyle.setDynamicHeight(context: context, value: type == DeviceType.mobile ? 0.1 : 0.011),
+                  width: CommonStyle.setDynamicWidth(context: context, value: type == DeviceType.mobile ? 0.2 : 0.019),
                   child: Image.network(
                     "https://miro.medium.com/max/700/1*tOitxCwTNcS3ESstLylmtg.png",
                   ),
@@ -162,10 +147,8 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height:
-                    CommonStyle.setDynamicHeight(context: context, value: 0.19),
-                width:
-                    CommonStyle.setDynamicWidth(context: context, value: 0.19),
+                height: CommonStyle.setDynamicHeight(context: context, value: 0.19),
+                width: CommonStyle.setDynamicWidth(context: context, value: 0.19),
                 padding: EdgeInsets.only(
                   left: CommonStyle.setLongestSide(
                     context: context,
@@ -176,18 +159,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     value: 0.01,
                   ),
                 ),
-                child: Image.network(
-                    "https://raw.githubusercontent.com/sobhashnaMilan/image/main/flutter_icon.png"),
+                child: Image.network("https://raw.githubusercontent.com/sobhashnaMilan/image/main/flutter_icon.png"),
               ),
               CommonStyle.verticalSpace(context, 0.035),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: CommonStyle.setDynamicHeight(
-                        context: context, value: 0.11),
-                    width: CommonStyle.setDynamicWidth(
-                        context: context, value: 0.11),
+                    height: CommonStyle.setDynamicHeight(context: context, value: 0.11),
+                    width: CommonStyle.setDynamicWidth(context: context, value: 0.11),
                     child: Image.network(
                       "https://miro.medium.com/max/700/1*tOitxCwTNcS3ESstLylmtg.png",
                     ),
@@ -238,17 +218,13 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               TextSpan(
                 text: StringConstant.dontHaveAnAccountLabel.tr,
-                style: type == DeviceType.mobile
-                    ? black100Medium18TextStyle(context)
-                    : black100Medium10TextStyle(context),
+                style: type == DeviceType.mobile ? black100Medium18TextStyle(context) : black100Medium10TextStyle(context),
               ),
               TextSpan(
                 text: " ${StringConstant.signupLabel.tr}",
                 style: TextStyle(
                   fontFamily: StringConstant.poppinsFont,
-                  fontSize: type == DeviceType.mobile
-                      ? MediaQuery.of(context).size.longestSide * 0.018
-                      : MediaQuery.of(context).size.longestSide * 0.010,
+                  fontSize: type == DeviceType.mobile ? MediaQuery.of(context).size.longestSide * 0.018 : MediaQuery.of(context).size.longestSide * 0.010,
                   fontWeight: FontWeight.w600,
                   color: AppColors.accentColor,
                 ),
@@ -292,9 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget buildHeadingSection(DeviceType type) {
     return Text(
       StringConstant.loginTitle.tr,
-      style: type == DeviceType.mobile
-          ? black100Medium24TextStyle(context)
-          : black100Medium20TextStyle(context),
+      style: type == DeviceType.mobile ? black100Medium24TextStyle(context) : black100Medium20TextStyle(context),
     );
   }
 
@@ -331,9 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
           type == DeviceType.mobile ? 0.035 : 0.025,
         ),
         buildDoNotHaveAnAccountSection(
-          ResponsiveUtil.isMobile(context)
-              ? DeviceType.mobile
-              : DeviceType.desktop,
+          ResponsiveUtil.isMobile(context) ? DeviceType.mobile : DeviceType.desktop,
         )
         /*  CommonStyle.verticalSpace(
           context,
@@ -388,18 +360,12 @@ class _LoginScreenState extends State<LoginScreen> {
             iconSuffix: GestureDetector(
               onTap: () => controller.updatePasswordVisibility(),
               child: Container(
-                margin: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.longestSide * 0.008),
-                padding: EdgeInsets.all(
-                    MediaQuery.of(context).size.longestSide * 0.008),
+                margin: EdgeInsets.only(right: MediaQuery.of(context).size.longestSide * 0.008),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.008),
                 color: Colors.transparent,
                 child: Icon(
-                  size: type == DeviceType.mobile
-                      ? MediaQuery.of(context).size.shortestSide * 0.04
-                      : MediaQuery.of(context).size.shortestSide * 0.04,
-                  controller.isPasswordVisible.value
-                      ? Icons.visibility_off
-                      : Icons.visibility,
+                  size: type == DeviceType.mobile ? MediaQuery.of(context).size.shortestSide * 0.04 : MediaQuery.of(context).size.shortestSide * 0.04,
+                  controller.isPasswordVisible.value ? Icons.visibility_off : Icons.visibility,
                 ),
               ),
             ),
@@ -428,8 +394,7 @@ class _LoginScreenState extends State<LoginScreen> {
         type: SnackType.error,
         message: StringConstant.enterPasswordFieldValidation,
       );
-    } else if (!controller.passwordTextController.text
-        .isStringValid(minLength: 6)) {
+    } else if (!controller.passwordTextController.text.isStringValid(minLength: 6)) {
       return SnackbarUtil.showSnackbar(
         context: context,
         type: SnackType.error,
@@ -464,9 +429,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (loginResult) {
       // ignore: use_build_context_synchronously
-      SocketManager.connectToServer();
-      Logger().d("message");
-      Get.offNamed(ScreenRoutesConstant.chatScreen);
+      // socket connect
+      SocketManager.connectToServer(
+        onError: (msg) {
+          // user connect
+          Map<String, dynamic> socketParams = {};
+          socketParams['userId'] = userDataSingleton.id;
+
+          SocketManager.userConnectEvent(socketParams, onConnect: (data) {
+            Get.offNamed(ScreenRoutesConstant.userListScreen);
+          });
+        },
+      );
     }
   }
 }

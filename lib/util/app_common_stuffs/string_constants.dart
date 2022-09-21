@@ -95,6 +95,9 @@ class StringConstant {
   static const String txtEnterNumber = 'Number View';
   static const String txtOtpView = 'Otp View';
 
+  ///title
+  static const String titleChatList = 'Chat List';
+
   /// button text
   static const String btnFirebaseOtp = 'FireBase Auth OTP';
   static const String btnApiDemo = 'Api Demo';

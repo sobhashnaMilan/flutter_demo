@@ -33,9 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DeviceType deviceType = ResponsiveUtil.isMobile(context)
-        ? DeviceType.mobile
-        : DeviceType.desktop;
+    DeviceType deviceType = ResponsiveUtil.isMobile(context) ? DeviceType.mobile : DeviceType.desktop;
 
     return GetBuilder(
         init: HomeController(),
@@ -50,16 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 titleWidget: Text(
                   "Home Screen".tr,
                   textDirection: TextDirection.ltr,
-                  style: deviceType == DeviceType.mobile
-                      ? white100Medium22TextStyle(context)
-                      : white100Medium10TextStyle(context),
+                  style: deviceType == DeviceType.mobile ? white100Medium22TextStyle(context) : white100Medium10TextStyle(context),
                 ),
               ),
-              body: homeView(deviceType));
+              body: homeView(deviceType, controller));
         });
   }
 
-  Widget homeView(DeviceType deviceType) {
+  Widget homeView(DeviceType deviceType, HomeController controller) {
     return Container(
       width: Get.width,
       height: Get.height,
@@ -145,8 +141,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPress;
   final String text;
 
-  const CustomButton({Key? key, required this.onPress, required this.text})
-      : super(key: key);
+  const CustomButton({Key? key, required this.onPress, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

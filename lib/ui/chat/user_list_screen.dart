@@ -1,38 +1,37 @@
+import 'package:flutter_demo/controllers/chat/user_list_controller.dart';
 import 'package:flutter_demo/util/import_export_util.dart';
+import 'package:flutter_demo/util/remove_glow_effect.dart';
 
-import '../../controllers/api_demo/api_demo_controller.dart';
-import '../../util/remove_glow_effect.dart';
-
-class ApiDemo extends StatefulWidget {
-  const ApiDemo({Key? key}) : super(key: key);
+class UserListScreen extends StatefulWidget {
+  const UserListScreen({Key? key}) : super(key: key);
 
   @override
-  State<ApiDemo> createState() => _ApiDemoState();
+  State<UserListScreen> createState() => _UserListScreenState();
 }
 
-class _ApiDemoState extends State<ApiDemo> {
-  ApiDemoController controller = ApiDemoController();
+class _UserListScreenState extends State<UserListScreen> {
+  UserListController controller = Get.find<UserListController>();
 
   @override
   void initState() {
     super.initState();
-    homeDataAPICall();
+    getUserList();
+  }
+
+  getUserList({bool pullToRefresh = false}) async {
+    await controller.getUserList(pullToRefresh: pullToRefresh, context: context);
   }
 
   @override
   Widget build(BuildContext context) {
-    DeviceType deviceType = ResponsiveUtil.isMobile(context)
-        ? DeviceType.mobile
-        : DeviceType.desktop;
+    DeviceType deviceType = ResponsiveUtil.isMobile(context) ? DeviceType.mobile : DeviceType.desktop;
 
     return Scaffold(
       appBar: AppBarComponent.buildAppbarForHome(
         titleWidget: Text(
-          StringConstant.btnApiDemo.tr,
+          StringConstant.titleChatList.tr,
           textDirection: TextDirection.ltr,
-          style: deviceType == DeviceType.mobile
-              ? white100Medium22TextStyle(context)
-              : white100Medium10TextStyle(context),
+          style: deviceType == DeviceType.mobile ? white100Medium22TextStyle(context) : white100Medium10TextStyle(context),
         ),
       ),
       body: Padding(
@@ -43,9 +42,7 @@ class _ApiDemoState extends State<ApiDemo> {
             CommonStyle.setDynamicHeight(context: context, value: 0.01),
           ),
           child: Obx(
-            () => controller.isDataLoading.value
-                ? CommonStyle.displayLoadingIndicator(deviceType)
-                : buildBodySection(deviceType),
+            () => controller.isDataLoading.value ? CommonStyle.displayLoadingIndicator(deviceType) : buildBodySection(deviceType),
           )),
     );
   }
@@ -54,26 +51,22 @@ class _ApiDemoState extends State<ApiDemo> {
 
   Widget buildBodySection(DeviceType type) {
     return RefreshIndicator(
-      onRefresh: () => homeDataAPICall(pullToRefresh: true),
+      onRefresh: () => getUserList(pullToRefresh: true),
       child: Stack(
         children: [
-          buildLoadNoDataSection(type),
-          controller.homeDataList.isEmpty
+          controller.userList.isEmpty
               ? Stack(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                        top: CommonStyle.setDynamicHeight(
-                            context: context,
-                            value: type == DeviceType.mobile ? 0.2 : 0.05),
+                        top: CommonStyle.setDynamicHeight(context: context, value: type == DeviceType.mobile ? 0.2 : 0.05),
                       ),
                       child: ScrollConfiguration(
                         behavior: RemoveGlowEffect(),
                         child: ListView(),
                       ),
                     ),
-                    CommonStyle.loadNoDataView(
-                        context: context, deviceType: type),
+                    CommonStyle.loadNoDataView(context: context, deviceType: type),
                   ],
                 )
               : type == DeviceType.mobile
@@ -92,7 +85,7 @@ class _ApiDemoState extends State<ApiDemo> {
       child: ScrollConfiguration(
         behavior: RemoveGlowEffect(),
         child: ListView.builder(
-          itemCount: controller.homeDataList.length,
+          itemCount: controller.userList.length,
           physics: const ClampingScrollPhysics(),
           itemBuilder: (context, index) {
             return Padding(
@@ -113,11 +106,11 @@ class _ApiDemoState extends State<ApiDemo> {
   Widget buildItemListWeb() {
     return Padding(
       padding: EdgeInsets.only(
-        top: CommonStyle.setDynamicHeight(context: context, value: 0.15),
+        top: CommonStyle.setDynamicHeight(context: context, value: 0.0),
       ),
       child: GridView.builder(
         shrinkWrap: true,
-        itemCount: controller.homeDataList.length,
+        itemCount: controller.userList.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.fromLTRB(
@@ -131,7 +124,7 @@ class _ApiDemoState extends State<ApiDemo> {
         },
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 5,
+          childAspectRatio: 7,
         ),
       ),
     );
@@ -150,85 +143,26 @@ class _ApiDemoState extends State<ApiDemo> {
           CommonStyle.setDynamicWidth(context: context, value: 0.02),
           CommonStyle.setDynamicHeight(context: context, value: 0.01),
         ),
-        child: Text(
-          ("${controller.homeDataList[i].name!}\n\n${controller.homeDataList[i].email!}\n\n${controller.homeDataList[i].gender!}") ??
-              "",
-          style: deviceType == DeviceType.mobile
-              ? black80Medium20TextStyle(context)
-              : black80Medium10TextStyle(context),
-          // maxLines: 5,
-          overflow: TextOverflow.ellipsis,
+        child: Row(
+          children: [
+            SizedBox(
+              height: deviceType == DeviceType.mobile ? CommonStyle.setLongestSide(context: context, value: 0.06) : CommonStyle.setShortestSide(context: context, value: 0.06),
+              width: deviceType == DeviceType.mobile ? CommonStyle.setLongestSide(context: context, value: 0.06) : CommonStyle.setShortestSide(context: context, value: 0.06),
+              child: Image.network(
+                "https://raw.githubusercontent.com/sobhashnaMilan/image/main/user_icon.png",
+                fit: BoxFit.fill,
+              ),
+            ),
+            CommonStyle.horizontalSpace(context, 0.01),
+            Text(
+              ("${controller.userList[i].firstName}\n\n${controller.userList[i].email}\n") ?? "",
+              style: deviceType == DeviceType.mobile ? black80Medium20TextStyle(context) : black80Medium10TextStyle(context),
+              // maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
   }
-
-  /// get user list api call [Get Method]
-
-  Future<void> homeDataAPICall({bool pullToRefresh = false}) async {
-    await controller.homeDataAPICall(
-      mContext: context,
-      requestParams: null,
-      pullToRefresh: pullToRefresh,
-      onError: (msg) => SnackbarUtil.showSnackbar(
-        context: context,
-        type: SnackType.error,
-        message: msg,
-      ),
-    );
-  }
-
-  /// add user api call [Post Method]
-
-  Future<void> homeAddDataAPICall({bool pullToRefresh = false}) async {
-    await controller.homeAddDataAPICall(
-        mContext: context,
-        requestParams: null,
-        pullToRefresh: pullToRefresh,
-        onError: (msg) {});
-  }
-
-  /// add user list api call [Post Method]
-  Widget buildLoadNoDataSection(DeviceType type) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: CommonStyle.setDynamicHeight(context: context, value: 0.02),
-      ),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: ButtonComponent(
-          context: context,
-          backgroundColor: AppColors.blueColor,
-          onPressed: () {
-            homeAddDataAPICall(pullToRefresh: false);
-          },
-          text: "add User",
-        ),
-      ),
-    );
-  }
-
-/*userAddAPICall() {
-    isNetworkConnected().then(
-      (connection) {
-        if (connection) {
-          controller.userAddAPICall(
-            name: "agile",
-            job: "dev",
-            onSuccess: (msg) {
-              showSuccessToast(context, msg);
-            },
-            onError: (msg) {
-              showErrorToast(context, msg);
-            },
-            onRequestTimeOut: (msg) {
-              showErrorToast(context, msg);
-            },
-          );
-        } else {
-          showErrorToast(context, controller.message.msgInternetMessage);
-        }
-      },
-    );
-  }*/
 }
