@@ -8,10 +8,14 @@ enum EventType {
   connect,
   userList,
   userTyping,
+  startTyping,
+  stopTyping,
   sendMessage,
   chatHistory,
   chatList,
   messageStatus,
+  serverMessageStatus,
+  receiveMessage,
   disConnected
 }
 
@@ -37,14 +41,13 @@ class SocketConstant {
 
   static String get prefixVersion => 'v6/chat';
 
+
   static String getEvent(EventType type) {
     switch (type) {
       case EventType.connect:
         return 'client-user-connected';
       case EventType.userList:
         return 'client-user-listing';
-      case EventType.userTyping:
-        return 'client-user-typing';
       case EventType.sendMessage:
         return 'client-send-message';
       case EventType.chatHistory:
@@ -53,6 +56,16 @@ class SocketConstant {
         return 'client-chat-listing';
       case EventType.messageStatus:
         return 'client-change-message-status-all';
+      case EventType.serverMessageStatus:
+        return 'server-change-message-status-all';
+      case EventType.receiveMessage:
+        return 'server-receive-message';
+      case EventType.userTyping:
+        return 'client-user-typing';
+      case EventType.startTyping:
+        return 'server-typing-start';
+      case EventType.stopTyping:
+        return 'server-typing-stop';
       case EventType.disConnected:
         return 'client-disconnected';
      default:

@@ -56,26 +56,29 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget buildBodySection(DeviceType type) {
-    return Container(
-      color: Colors.black12,
-      child: Center(
-        child: SizedBox(
-          width: CommonStyle.setDynamicWidth(
-            context: context,
-            value: 0.84,
-          ),
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+    return SingleChildScrollView(
+      child: Container(
+        height: Get.height,
+        color: Colors.black12,
+        child: Center(
+          child: SizedBox(
+            width: CommonStyle.setDynamicWidth(
+              context: context,
+              value: 0.84,
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: CommonStyle.setDynamicHeight(context: context, value: 0.06),
-                bottom: CommonStyle.setDynamicHeight(context: context, value: 0.06),
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              child: type == DeviceType.mobile ? buildMobileBodyLogin(type) : buildWebBodyLogin(type),
-              // child: buildMobileBodyLogin(type),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: CommonStyle.setDynamicHeight(context: context, value: 0.06),
+                  bottom: CommonStyle.setDynamicHeight(context: context, value: 0.06),
+                ),
+                child: type == DeviceType.mobile ? buildMobileBodyLogin(type) : buildWebBodyLogin(type),
+                // child: buildMobileBodyLogin(type),
+              ),
             ),
           ),
         ),
@@ -423,24 +426,19 @@ class _LoginScreenState extends State<LoginScreen> {
       onError: (msg) => SnackbarUtil.showSnackbar(
         context: context,
         type: SnackType.error,
-        message: "msg",
+        message: msg,
       ),
     );
 
     if (loginResult) {
       // ignore: use_build_context_synchronously
-      // socket connect
-      SocketManager.connectToServer(
-        onError: (msg) {
-          // user connect
-          Map<String, dynamic> socketParams = {};
-          socketParams['userId'] = userDataSingleton.id;
+      // user connect
+      Map<String, dynamic> socketParams = {};
+      socketParams['userId'] = userDataSingleton.id;
 
-          SocketManager.userConnectEvent(socketParams, onConnect: (data) {
-            Get.offNamed(ScreenRoutesConstant.userListScreen);
-          });
-        },
-      );
+      SocketManager.userConnectEvent(socketParams, onConnect: (data) {
+        Get.offNamed(ScreenRoutesConstant.chatListScreen);
+      });
     }
   }
 }

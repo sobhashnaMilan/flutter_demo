@@ -41,7 +41,7 @@ class ApiDemoController extends GetxController {
     if (response != null) {
       var d = {"data": response.data, "status": 200, "message": "good"};
       var data =
-          ResponseModel<HomeModelCustom>.fromJson(d, response.statusCode!);
+          ResponseModel<HomeModelCustom>.fromJson(d);
       Logger().d("TAG Data = > $data");
       if (data.status == ApiConstant.statusCodeSuccess) {
         homeDataList.clear();
@@ -76,7 +76,7 @@ class ApiDemoController extends GetxController {
     if (!pullToRefresh) updateLoadingFlag();
     if (response != null) {
       var mData = {"data": response.data, "status": 200, "message": "good"};
-      var data = ResponseModel<AddUser>.fromJson(mData, response.statusCode!);
+      var data = ResponseModel<AddUser>.fromJson(mData);
       Logger().d("TAG Data = > $data");
       if (data.status == ApiConstant.statusCodeSuccess) {
         addUser = data.data;

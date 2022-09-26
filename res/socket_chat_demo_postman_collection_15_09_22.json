@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "dc1cf408-0c85-4a64-a508-971b39c140b4",
+		"name": "CHAT_DEMO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "firstName",
+							"value": "Sarthak",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "sarthak@yopmail.com",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						},
+						{
+							"key": "loginType",
+							"value": "gmail",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "deviceType",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "deviceId",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "fcmToken",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v6/auth/signup",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v6",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "harry@yopmail.com",
+							"type": "text"
+						},
+						{
+							"key": "deviceType",
+							"value": "android",
+							"type": "text"
+						},
+						{
+							"key": "deviceId",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "fcm_token",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "loginType",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v6/auth/login",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v6",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userId",
+							"value": "60922d513101737ed04ab1dd",
+							"type": "text"
+						},
+						{
+							"key": "participants",
+							"value": "[\"631acfde52d00ab29a9fd7e5\"]",
+							"type": "text"
+						},
+						{
+							"key": "is_group",
+							"value": "2",
+							"description": "1-groupchat,2-personalchat",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v6/auth/createRoom",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v6",
+						"auth",
+						"createRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fileUpload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/agilelpt40/Picture/testingImages/download.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v6/auth/fileUpload",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v6",
+						"auth",
+						"fileUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "6305c628cba9e72b9c020c42",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "rocking star",
+							"type": "text"
+						},
+						{
+							"key": "group_members",
+							"value": "[\"6305c640cba9e72b9c020c44\",\"6305c654cba9e72b9c020c46\"]",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/agilelpt40/Picture/testingImages/bus.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v1/auth/createGroup",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v1",
+						"auth",
+						"createGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "joinGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "group_id",
+							"value": "6305c7a99eb5033bb0c3047f",
+							"type": "text"
+						},
+						{
+							"key": "user_id",
+							"value": "6305c66acba9e72b9c020c48",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://202.131.117.92:7100/v1/auth/joinGroup",
+					"protocol": "http",
+					"host": [
+						"202",
+						"131",
+						"117",
+						"92"
+					],
+					"port": "7100",
+					"path": [
+						"v1",
+						"auth",
+						"joinGroup"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

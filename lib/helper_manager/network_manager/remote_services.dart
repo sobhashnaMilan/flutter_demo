@@ -96,7 +96,7 @@ class RemoteServices {
             options: Options(headers: requestFinal.item2));
         final Map<String, dynamic> responseJson =
             json.decode(response.data.toString());
-        return ResponseModel<T>.fromJson(responseJson, response.statusCode!);
+        return ResponseModel<T>.fromJson(responseJson);
       } on DioError catch (e) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: e.message);
@@ -158,7 +158,7 @@ class RemoteServices {
             data: requestFinal.item3,
             options: Options(headers: requestFinal.item2));
 
-        return ResponseModel<T>.fromJson(response.data, response.statusCode);
+        return ResponseModel<T>.fromJson(response.data);
       } on DioError catch (e) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: e.message);
@@ -217,7 +217,7 @@ class RemoteServices {
             options: Options(headers: requestFinal.item2));
 
         return ResponseModel<T>.fromJson(
-            json.decode(response.data.toString()), response.statusCode);
+            json.decode(response.data.toString()));
       } on DioError catch (e) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: e.message);
@@ -249,7 +249,7 @@ class RemoteServices {
             options: Options(headers: requestFinal.item2));
 
         return ResponseModel<T>.fromJson(
-            json.decode(response.data.toString()), response.statusCode);
+            json.decode(response.data.toString()));
       } on DioError catch (e) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: e.message);
@@ -329,7 +329,7 @@ class RemoteServices {
         );
 
         return ResponseModel<T>.fromJson(
-            json.decode(response.data.toString()), response.statusCode);
+            json.decode(response.data.toString()));
       } on DioError catch (error) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: error.message);

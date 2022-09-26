@@ -96,6 +96,7 @@ class StringConstant {
   static const String txtOtpView = 'Otp View';
 
   ///title
+  static const String titleUserList = 'User List';
   static const String titleChatList = 'Chat List';
 
   /// button text
@@ -111,6 +112,7 @@ class StringConstant {
   static const String btnChat = 'Chat';
   static const String btnAddUser = 'add user';
   static const String btnOk = 'OK';
+  static const String btnSend = 'Send';
   static const String btnVerify = 'Verify';
   static const String btnResend = 'Resend';
 

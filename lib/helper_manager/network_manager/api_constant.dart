@@ -8,6 +8,7 @@ enum ApiType {
   login,
   userList,
   addUser,
+  createRoom,
   none,
 }
 
@@ -70,6 +71,8 @@ class ApiConstant {
     switch (type) {
       case ApiType.login:
         return '$prefixAuth/login';
+      case ApiType.createRoom:
+        return '$prefixAuth/createRoom';
       case ApiType.userList:
         return 'users';
       case ApiType.addUser:

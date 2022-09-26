@@ -138,6 +138,10 @@ dbus
 2.15
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/dbus-0.7.4/
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/dbus-0.7.4/lib/
+debounce_throttle
+2.12
+file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/debounce_throttle-2.0.0/
+file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/debounce_throttle-2.0.0/lib/
 device_info_plus
 2.12
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus-3.2.4/
@@ -618,6 +622,10 @@ shelf_web_socket
 2.14
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-1.0.2/
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-1.0.2/lib/
+simple_observable
+2.12
+file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/simple_observable-2.0.0/
+file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/simple_observable-2.0.0/lib/
 socket_io_client
 2.12
 file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/socket_io_client-1.0.2/

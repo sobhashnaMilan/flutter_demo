@@ -11,7 +11,7 @@ UserListResponse _$UserListResponseFromJson(Map<String, dynamic> json) =>
       status: json['status'] as int,
       message: json['message'] as String,
       data: (json['data'] as List<dynamic>)
-          .map((e) => ChatUser.fromJson(e as Map<String, dynamic>))
+          .map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

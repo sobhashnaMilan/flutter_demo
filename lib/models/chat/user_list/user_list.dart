@@ -24,15 +24,15 @@ class UserListResponse {
   @JsonKey(name: "message")
   String message;
   @JsonKey(name: "data")
-  List<ChatUser> data;
+  List<User> data;
 
   factory UserListResponse.fromJson(Map<String, dynamic> json) => _$UserListResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserListResponseToJson(this);
 }
 
-class ChatUser {
-  ChatUser({
+class User {
+  User({
     required this.id,
     required this.email,
     required this.firstName,
@@ -48,8 +48,8 @@ class ChatUser {
   String phoneNumber;
   String profilePicture;
 
-  factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
-        id: json['id'] ?? "",
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json['_id'] ?? "",
         email: json['email'] ?? "",
         firstName: json['firstName'] ?? "",
         lastName: json['lastName'] ?? "",

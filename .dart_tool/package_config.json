@@ -206,6 +206,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "debounce_throttle",
+      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/debounce_throttle-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "device_info_plus",
       "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus-3.2.4",
       "packageUri": "lib/",
@@ -944,6 +950,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "simple_observable",
+      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/simple_observable-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -1166,7 +1178,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-09-21T03:30:57.828550Z",
+  "generated": "2022-09-26T03:54:30.488212Z",
   "generator": "pub",
   "generatorVersion": "2.18.1"
 }
