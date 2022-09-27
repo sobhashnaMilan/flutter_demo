@@ -15,22 +15,20 @@ import 'package:get/get.dart';
 
 class ChatScreenController extends GetxController {
   // var userList = <UserModel>[]. ;
-  var isDataLoading = false.obs, chatHistoryList = <ChatHistory>[].obs;
+  var chatHistoryList = <ChatHistory>[].obs;
+  var chatList = <ChatUser>[].obs;
   var chatHistoryListTemp = <ChatHistory>[].obs;
   UserListResponse? mUserListResponse;
   TextEditingController sendMessageController = TextEditingController();
   var userName = "".obs;
+  var lastMessageTime = "".obs;
   var roomId = "".obs;
   var isType = false.obs;
   var isWriting = false.obs;
-
-  updateLoadingFlag() {
-    isDataLoading.value = !isDataLoading.value;
-    update();
-  }
+  var isSelected = true.obs;
+  var isFirst = true.obs;
 
   getChatHistory({required pullToRefresh, required context}) {
-    if (!pullToRefresh) updateLoadingFlag();
     Map<String, dynamic> socketParams = {};
     socketParams['userId'] = userDataSingleton.id;
     socketParams['roomId'] = roomId.value;
@@ -38,7 +36,6 @@ class ChatScreenController extends GetxController {
     socketParams['limit'] = "1000";
     SocketManager.chatHistoryEvent(socketParams, onChatHistory: (userListResponse) {
       if (userListResponse.status == SocketConstant.statusCodeSuccess) {
-        if (!pullToRefresh) updateLoadingFlag();
         chatHistoryList.clear();
         chatHistoryListTemp.clear();
         chatHistoryListTemp.addAll(userListResponse?.data ?? []);
@@ -78,6 +75,24 @@ class ChatScreenController extends GetxController {
     socketParams['roomId'] = roomId.value;
     socketParams['typing'] = typeId;
     SocketManager.userTypingEvent(socketParams, onError: (message) {
+      SnackbarUtil.showSnackbar(
+        context: context,
+        type: SnackType.error,
+        message: message,
+      );
+    });
+  }
+
+  chatListEvent({required context, required pullToRefresh}) {
+    Map<String, dynamic> socketParams = {};
+    socketParams['userId'] = userDataSingleton.id;
+    SocketManager.chatListEvent(socketParams, onChatList: (chatListResponse) {
+      if (chatListResponse.status == SocketConstant.statusCodeSuccess) {
+        chatList.clear();
+        chatList.addAll(chatListResponse?.data ?? []);
+        update(chatList);
+      }
+    }, onError: (message) {
       SnackbarUtil.showSnackbar(
         context: context,
         type: SnackType.error,

@@ -1,3 +1,4 @@
+import 'package:flutter_demo/util/app_logger.dart';
 import 'package:intl/intl.dart';
 
 /// DEV NOTE: for more date and time formats, refer
@@ -14,6 +15,22 @@ class DateUtil {
   }) {
     try {
       return DateFormat(requiredFormat).format(isUTC ? date.toUtc() : date);
+    } catch (e) {
+      throw 'Unable to convert $e';
+    }
+  }
+
+  /// convert datetime to string
+  /// by default [isUTC] flag is false
+  /// set it to TRUE if you want to convert utc date to string
+  static String dateTimeUtcToLocal({
+    required String date,
+    String requiredFormat = "yyyy-MM-dd HH:mm:ss",
+    bool isUTC = false,
+  }) {
+    try {
+      var dateTime = DateFormat("yyyy-MM-dd HH:mm:ss.sssZ").parse(date, true);
+      return dateTime.toLocal().toString();
     } catch (e) {
       throw 'Unable to convert $e';
     }

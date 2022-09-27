@@ -4,6 +4,7 @@ import 'package:flutter_demo/singleton/user_data_singleton.dart';
 import 'package:flutter_demo/ui/firebase_deep_linking/deep_link_firebase.dart';
 import 'package:flutter_demo/util/app_common_stuffs/screen_routes.dart';
 import 'package:flutter_demo/util/app_logger.dart';
+import 'package:flutter_demo/util/responsive_util.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -56,14 +57,18 @@ class HomeController extends GetxController {
     Get.to(const DeepLinkFirebase(), arguments: name);
   }
 
-  void checkUserLogin() async {
+  void checkUserLogin(DeviceType deviceType) async {
     isLoggedIn = await UserDataSingleton.isLoginVerified();
     if (isLoggedIn) {
       await userDataSingleton.loadUserDetails();
       Map<String, dynamic> socketParams = {};
       socketParams['userId'] = userDataSingleton.id;
       SocketManager.userConnectEvent(socketParams, onConnect: (data) {
-        Get.offNamed(ScreenRoutesConstant.chatListScreen);
+        if(deviceType == DeviceType.mobile) {
+          Get.toNamed(ScreenRoutesConstant.chatListScreen);
+        } else {
+          Get.toNamed(ScreenRoutesConstant.chatScreen , arguments: ["isWeb"]);
+        }
       });
     } else {
       Get.toNamed(ScreenRoutesConstant.loginScreen);

@@ -90,6 +90,7 @@ class MyApp extends StatelessWidget {
           locale: currentLocale,
           fallbackLocale: LanguageUtil.fallbackLocale,
           theme: ThemeData(
+            useMaterial3: true,
             primarySwatch: Colors.blue,
           ),
         );

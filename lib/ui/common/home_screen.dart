@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ButtonComponent(
               backgroundColor: AppColors.blueColor,
               context: context,
-              onPressed: () => controller.checkUserLogin(),
+              onPressed: () => controller.checkUserLogin(deviceType),
               text: StringConstant.btnChat),
         ],
       ),
