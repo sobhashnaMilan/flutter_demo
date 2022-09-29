@@ -64,11 +64,7 @@ class HomeController extends GetxController {
       Map<String, dynamic> socketParams = {};
       socketParams['userId'] = userDataSingleton.id;
       SocketManager.userConnectEvent(socketParams, onConnect: (data) {
-        if(deviceType == DeviceType.mobile) {
           Get.toNamed(ScreenRoutesConstant.chatListScreen);
-        } else {
-          Get.toNamed(ScreenRoutesConstant.chatScreen , arguments: ["isWeb"]);
-        }
       });
     } else {
       Get.toNamed(ScreenRoutesConstant.loginScreen);

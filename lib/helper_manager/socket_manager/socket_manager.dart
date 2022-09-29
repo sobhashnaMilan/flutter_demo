@@ -1,10 +1,9 @@
-import 'package:flutter_demo/controllers/chat/chat_controller.dart';
+import 'package:flutter_demo/controllers/chat/chat_list_controller.dart';
 import 'package:flutter_demo/helper_manager/socket_manager/socket_constant.dart';
 import 'package:flutter_demo/models/base/empty_response.dart';
 import 'package:flutter_demo/models/base/response_model.dart';
 import 'package:flutter_demo/models/chat/chat_history/chat_history.dart';
 import 'package:flutter_demo/models/chat/chat_list/chat_list.dart';
-import 'package:flutter_demo/models/chat/send_message/send_message.dart';
 import 'package:flutter_demo/models/chat/typeing/typeing.dart';
 import 'package:flutter_demo/models/chat/user_list/user_list.dart';
 import 'package:flutter_demo/singleton/user_data_singleton.dart';
@@ -255,7 +254,7 @@ class SocketManager {
           var dataResponse = ChatHistory.fromJson(Map<String, dynamic>.from(data));
           Logger().d("receiveMessageEvent() : response -> $dataResponse");
           if (dataResponse != null) {
-            ChatScreenController controller = Get.put(ChatScreenController());
+            ChatListController controller = Get.put(ChatListController());
 
             // change message status read
             Map<String, dynamic> socketParams = {};
@@ -283,8 +282,8 @@ class SocketManager {
       Logger().i("startTypeEvent():");
       try {
         _socket.on(SocketConstant.getEvent(EventType.startTyping), (data) {
-          ChatScreenController controller = Get.put(ChatScreenController());
-          controller.isType.value = true;
+          ChatListController controller = Get.put(ChatListController());
+          controller.hasType.value = true;
         });
       } catch (e) {
         Logger().e("startTypeEvent(): On catch $e");
@@ -301,8 +300,8 @@ class SocketManager {
       Logger().i("stopTypeEvent():");
       try {
         _socket.on(SocketConstant.getEvent(EventType.stopTyping), (data) {
-          ChatScreenController controller = Get.put(ChatScreenController());
-          controller.isType.value = false;
+          ChatListController controller = Get.put(ChatListController());
+          controller.hasType.value = false;
         });
       } catch (e) {
         Logger().e("stopTypeEvent(): On catch $e");

@@ -8,6 +8,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "after_layout",
+      "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/after_layout-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "analyzer",
       "rootUri": "file:///Users/agilemac70/Milan/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-4.7.0",
       "packageUri": "lib/",
@@ -1178,7 +1184,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-09-26T03:54:30.488212Z",
+  "generated": "2022-09-28T04:04:37.415774Z",
   "generator": "pub",
   "generatorVersion": "2.18.1"
 }

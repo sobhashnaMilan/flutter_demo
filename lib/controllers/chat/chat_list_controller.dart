@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/helper_manager/network_manager/api_constant.dart';
 import 'package:flutter_demo/helper_manager/network_manager/remote_services.dart';
@@ -17,28 +16,30 @@ import '../../singleton/user_data_singleton.dart';
 import 'package:get/get.dart';
 
 class ChatListController extends GetxController {
-  // var userList = <UserModel>[]. ;
-  var chatList = <ChatUser>[].obs;
-  ChatListResponse? mUserListResponse;
-  var isSelected = true.obs;
+  TextEditingController sendMessageController = TextEditingController();
+  final debounceText = Debouncer<String>(const Duration(milliseconds: 5000), initialValue: '');
 
-  // user list
-  var userList = <User>[].obs;
+  /// common
+  var hasType = false.obs;
+  var hasFirst = true.obs;
+  var hasChatList = true.obs; // check select user list or chat list
+  var hasChatSelected = false.obs; // check select chat
   var roomId = "".obs;
-  var selectedIndex = 0.obs;
+  var userName = "".obs;
 
+  /// chat list
+  var chatList = <ChatUser>[].obs;
 
-  // chat screen
+  /// user list
+  var userList = <User>[].obs;
+  var selectedUserIndex = 0.obs;
+
+  /// chat
   var chatHistoryList = <ChatHistory>[].obs;
   var chatHistoryListTemp = <ChatHistory>[].obs;
-  TextEditingController sendMessageController = TextEditingController();
-  var userName = "".obs;
-  var lastMessageTime = "".obs;
-  var isType = false.obs;
-  var isWriting = false.obs;
-  var isFirst = false.obs;
+  UserListResponse? mUserListResponse;
 
-  chatListEvent({required context,required pullToRefresh}) {
+  chatListEvent({required context, required pullToRefresh}) {
     Map<String, dynamic> socketParams = {};
     socketParams['userId'] = userDataSingleton.id;
     SocketManager.chatListEvent(socketParams, onChatList: (chatListResponse) {
@@ -47,7 +48,7 @@ class ChatListController extends GetxController {
         chatList.addAll(chatListResponse?.data ?? []);
         update(chatList);
       }
-    },onError: (message){
+    }, onError: (message) {
       SnackbarUtil.showSnackbar(
         context: context,
         type: SnackType.error,
@@ -80,13 +81,7 @@ class ChatListController extends GetxController {
 
   // create room
   createRoomAPICall({required dynamic requestParams, required onError}) async {
-    // updateLoggingFlag();
-
-    // ResponseModel<UserModel> loginAPIResponse = await sharedServiceManager.createPostRequest(endPoint: APIConstants.userLoginEndPoint, requestParams: requestParams);
     ResponseModel<Room> createRoomAPIResponse = await sharedServiceManager.createPostRequest(typeOfEndPoint: ApiType.createRoom, params: requestParams);
-
-    // updateLoggingFlag();
-
     if (createRoomAPIResponse.status == ApiConstant.statusCodeSuccess) {
       Logger().d("createRoomAPIResponse : -> ${createRoomAPIResponse.data?.roomId}");
       roomId.value = createRoomAPIResponse.data?.roomId ?? "";
@@ -97,9 +92,7 @@ class ChatListController extends GetxController {
     }
   }
 
-
-  /// history
-
+  //chat screen
 
   getChatHistory({required pullToRefresh, required context}) {
     Map<String, dynamic> socketParams = {};
@@ -131,7 +124,7 @@ class ChatListController extends GetxController {
     socketParams['message'] = message;
     socketParams['mediaId'] = "";
     SocketManager.sendMessageEvent(socketParams, onSend: (sendMessageResponse) {
-      userTyping(context: context, typeId: "0");
+      userTyping(typeId: "0");
       chatHistoryList.insert(0, sendMessageResponse.data);
     }, onError: (message) {
       SnackbarUtil.showSnackbar(
@@ -142,18 +135,19 @@ class ChatListController extends GetxController {
     });
   }
 
-  userTyping({required context, required typeId}) {
+  userTyping({required typeId}) {
     Map<String, dynamic> socketParams = {};
     socketParams['user_id'] = userDataSingleton.id;
     socketParams['roomId'] = roomId.value;
     socketParams['typing'] = typeId;
-    SocketManager.userTypingEvent(socketParams, onError: (message) {
-      SnackbarUtil.showSnackbar(
-        context: context,
-        type: SnackType.error,
-        message: message,
-      );
-    });
+    SocketManager.userTypingEvent(socketParams, onError: (message) {});
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    debounceText.values.listen((search) {
+      userTyping(typeId: "0");
+    });
+  }
 }
