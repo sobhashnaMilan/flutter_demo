@@ -9,6 +9,7 @@ enum ApiType {
   userList,
   addUser,
   createRoom,
+  fileUpload,
   none,
 }
 
@@ -73,6 +74,8 @@ class ApiConstant {
         return '$prefixAuth/login';
       case ApiType.createRoom:
         return '$prefixAuth/createRoom';
+      case ApiType.fileUpload:
+        return '$prefixAuth/fileUpload';
       case ApiType.userList:
         return 'users';
       case ApiType.addUser:

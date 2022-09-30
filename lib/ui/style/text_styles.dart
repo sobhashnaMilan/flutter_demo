@@ -7235,6 +7235,15 @@ TextStyle black80Medium10TextStyle(context) {
   );
 }
 
+TextStyle black80Medium8TextStyle(context) {
+  return TextStyle(
+    fontFamily: StringConstant.poppinsFont,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.08,
+    fontWeight: FontWeight.w500,
+    color: AppColors.blackColor.withOpacity(0.80),
+  );
+}
+
 TextStyle black75Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
@@ -7320,6 +7329,15 @@ TextStyle white80Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
     fontSize: MediaQuery.of(context).size.longestSide * 0.010,
+    fontWeight: FontWeight.w500,
+    color: AppColors.whiteColor.withOpacity(0.80),
+  );
+}
+
+TextStyle white80Medium8TextStyle(context) {
+  return TextStyle(
+    fontFamily: StringConstant.poppinsFont,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.008,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor.withOpacity(0.80),
   );

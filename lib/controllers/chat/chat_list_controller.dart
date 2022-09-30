@@ -25,6 +25,7 @@ class ChatListController extends GetxController {
   var hasChatList = true.obs; // check select user list or chat list
   var hasChatSelected = false.obs; // check select chat
   var roomId = "".obs;
+  var imageId = "".obs;
   var userName = "".obs;
 
   /// chat list
@@ -38,6 +39,19 @@ class ChatListController extends GetxController {
   var chatHistoryList = <ChatHistory>[].obs;
   var chatHistoryListTemp = <ChatHistory>[].obs;
   UserListResponse? mUserListResponse;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    /// check user typing or not
+
+    debounceText.values.listen((search) {
+      userTyping(typeId: "0");
+    });
+  }
+
+  /// chat list event
 
   chatListEvent({required context, required pullToRefresh}) {
     Map<String, dynamic> socketParams = {};
@@ -57,9 +71,7 @@ class ChatListController extends GetxController {
     });
   }
 
-  /// user list
-
-  // user list
+  /// user list event
 
   getUserListEvent({required pullToRefresh, required context}) {
     Map<String, dynamic> socketParams = {};
@@ -79,7 +91,7 @@ class ChatListController extends GetxController {
     });
   }
 
-  // create room
+  /// create room api
   createRoomAPICall({required dynamic requestParams, required onError}) async {
     ResponseModel<Room> createRoomAPIResponse = await sharedServiceManager.createPostRequest(typeOfEndPoint: ApiType.createRoom, params: requestParams);
     if (createRoomAPIResponse.status == ApiConstant.statusCodeSuccess) {
@@ -92,7 +104,20 @@ class ChatListController extends GetxController {
     }
   }
 
-  //chat screen
+  /// upload media
+  uploadFileAPICall({required dynamic requestParams, required onError, required List<AppMultiPartFile> file}) async {
+    ResponseModel<ImagesData> uploadImageAPIResponse = await sharedServiceManager.uploadRequest(ApiType.fileUpload,arrFile: file );
+    if (uploadImageAPIResponse.status == ApiConstant.statusCodeSuccess) {
+      Logger().d("uploadFileAPICall : -> ${uploadImageAPIResponse.data?.images}");
+      imageId.value = uploadImageAPIResponse.data?.images ?? "";
+      return true;
+    } else {
+      onError(uploadImageAPIResponse.message);
+      return false;
+    }
+  }
+
+  /// chat history event
 
   getChatHistory({required pullToRefresh, required context}) {
     Map<String, dynamic> socketParams = {};
@@ -117,6 +142,8 @@ class ChatListController extends GetxController {
     });
   }
 
+  /// send message event
+
   sendMessage({required context, required message}) {
     Map<String, dynamic> socketParams = {};
     socketParams['userId'] = userDataSingleton.id;
@@ -135,19 +162,13 @@ class ChatListController extends GetxController {
     });
   }
 
+  /// user typing event
+
   userTyping({required typeId}) {
     Map<String, dynamic> socketParams = {};
     socketParams['user_id'] = userDataSingleton.id;
     socketParams['roomId'] = roomId.value;
     socketParams['typing'] = typeId;
     SocketManager.userTypingEvent(socketParams, onError: (message) {});
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    debounceText.values.listen((search) {
-      userTyping(typeId: "0");
-    });
   }
 }

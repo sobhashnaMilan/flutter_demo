@@ -83,7 +83,7 @@ class SocketManager {
         Logger().e("userConnectEvent(): On catch $e");
       }
     } else {
-      Logger().e("userConnectEvent(): Unable to connect user");
+      Logger().e("userConnectEvent():  socket not connect");
     }
   }
 
@@ -109,13 +109,12 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("userListEvent(): Unable to get user list");
+      Logger().e("userListEvent(): socket not connect");
       onError("socket not connect");
       return null;
     }
   }
 
-  // base response
   static Future<dynamic> chatListEvent(Map<String, dynamic> socketParams, {required onChatList, required onError}) async {
     if (_socket.connected) {
       Logger().i("chatListEvent(): socketParams -> $socketParams");
@@ -137,7 +136,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("chatListEvent(): Unable to get user list");
+      Logger().e("chatListEvent(): socket not connect");
       return null;
     }
   }
@@ -163,7 +162,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("chatHistoryEvent(): Unable to get user list");
+      Logger().e("chatHistoryEvent(): socket not connect");
       return null;
     }
   }
@@ -189,7 +188,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("sendMessageEvent(): Unable to get user list");
+      Logger().e("sendMessageEvent(): socket not connect");
       return null;
     }
   }
@@ -214,7 +213,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("userTypingEvent(): Unable to get user list");
+      Logger().e("userTypingEvent(): socket not connect");
       return null;
     }
   }
@@ -239,7 +238,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("messageStatusEvent(): Unable to get user list");
+      Logger().e("messageStatusEvent(): socket not connect");
       return null;
     }
   }
@@ -272,7 +271,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("receiveMessageEvent(): Unable to get user list");
+      Logger().e("receiveMessageEvent(): socket not connect");
       return null;
     }
   }
@@ -290,7 +289,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("startTypeEvent(): Unable to get user list");
+      Logger().e("startTypeEvent(): socket not connect");
       return null;
     }
   }
@@ -308,7 +307,7 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("receiveMessageEvent(): Unable to get user list");
+      Logger().e("receiveMessageEvent(): socket not connect");
       return null;
     }
   }
@@ -325,68 +324,11 @@ class SocketManager {
         return null;
       }
     } else {
-      Logger().e("serverMessageStatusEvent(): Unable to get user list");
+      Logger().e("serverMessageStatusEvent(): socket not connect");
       return null;
     }
   }
 
   static void performClientUserConnectedEvent() {}
 
-  static void sendMessage({required String message}) {
-    if (_socket.connected) {
-      Map<String, String> messagePayload = {
-        "id": _socket.id ?? "",
-        "message": message,
-        "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
-        "from_id": "from_id",
-        "to_id": "to_id",
-      };
-
-      Logger().i("sendMessage(): Message payload -> $messagePayload");
-
-      try {
-        // _socket.emit("message", messagePayload);
-
-        _socket.emitWithAck("message", messagePayload, ack: (response) {
-          Logger().i("sendMessage(): Response -> $response");
-          Logger().i("sendMessage(): Sent message ID -> ${response['id']}");
-        });
-      } catch (e) {
-        Logger().e("sendMessage(): On catch $e");
-      }
-    } else {
-      Logger().e("sendMessage(): Unable to send a message, please connect socket to send a message");
-    }
-  }
-
-  static void sendTyping({required bool typing}) async {
-    if (_socket.connected) {
-      Map<String, String> typingPayload = {"id": _socket.id!, "typing": typing.toString()};
-
-      Logger().i("sendTyping(): Typing payload -> $typingPayload");
-
-      try {
-        _socket.emit("typing", typingPayload);
-      } catch (e) {
-        Logger().e("sendTyping(): On catch $e");
-      }
-    } else {
-      Logger().e("sendTyping(): Unable to send typing, please connect socket to send typing");
-      connectToServer(onError: () {}, onConnectManager: () {});
-      if (!_socket.connected) return;
-      sendTyping(typing: true);
-    }
-  }
-
-  static void getMessage({required Function handleMessage}) {
-    if (_socket.connected) {
-      try {
-        _socket.on("message", (data) => handleMessage);
-      } catch (e) {
-        Logger().e("getMessage(): On catch $e");
-      }
-    } else {
-      Logger().e("getMessage(): Unable to send typing, please connect socket to get message");
-    }
-  }
 }

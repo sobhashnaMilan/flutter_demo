@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter_demo/bindings/common/home_binding.dart';
 import 'package:flutter_demo/controllers/chat/chat_list_controller.dart';
 import 'package:flutter_demo/singleton/user_data_singleton.dart';
 import 'package:flutter_demo/ui/chat/chat_screen_new.dart';
+import 'package:flutter_demo/ui/common/home_screen.dart';
 import 'package:flutter_demo/ui/common_widgets/custom_list_tile.dart';
 import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_demo/util/date_util.dart';
@@ -105,7 +107,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   // color: Colors.white30,
                   margin: EdgeInsets.fromLTRB(
                     CommonStyle.setDynamicWidth(context: context, value: 0.03),
-                    type == DeviceType.mobile ? CommonStyle.setDynamicHeight(context: context, value: 0.04) : CommonStyle.setDynamicHeight(context: context, value: 0.04),
+                    type == DeviceType.mobile ? CommonStyle.setDynamicHeight(context: context, value: 0.01) : CommonStyle.setDynamicHeight(context: context, value: 0.04),
                     CommonStyle.setDynamicWidth(context: context, value: 0.03),
                     CommonStyle.setDynamicHeight(context: context, value: 0.00),
                   ),
@@ -134,6 +136,25 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           ],
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () async {
+                          Get.back();
+                          await logoutUser();
+                          Get.offAll(
+                                () => const HomeScreen(),
+                            binding: HomeBinding(),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.longestSide * 0.002),
+                          padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.008),
+                          color: Colors.transparent,
+                          child: Icon(
+                            size: type == DeviceType.mobile ? MediaQuery.of(context).size.shortestSide * 0.05 : MediaQuery.of(context).size.shortestSide * 0.04,
+                            Icons.logout,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

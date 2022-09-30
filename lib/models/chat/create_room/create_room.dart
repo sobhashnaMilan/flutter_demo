@@ -48,3 +48,20 @@ class Room {
     "roomId": roomId,
   };
 }
+
+
+class ImagesData {
+  ImagesData({
+    required this.images,
+  });
+
+  String? images;
+
+  factory ImagesData.fromJson(Map<String, dynamic> json) => ImagesData(
+    images: json["images"] ?? "",
+  );
+
+  Map<String, dynamic> toJson() => {
+    "images": images,
+  };
+}

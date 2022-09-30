@@ -328,8 +328,7 @@ class RemoteServices {
           },
         );
 
-        return ResponseModel<T>.fromJson(
-            json.decode(response.data.toString()));
+        return ResponseModel<T>.fromJson(response.data);
       } on DioError catch (error) {
         return createErrorResponse(
             status: ApiConstant.statusCodeBadGateway, message: error.message);

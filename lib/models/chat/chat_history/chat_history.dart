@@ -52,7 +52,7 @@ class ChatHistory {
   DateTime updatedAt;
   String roomId;
   SenderId senderId;
-  String mediaId;
+  MediaId? mediaId;
 
   factory ChatHistory.fromJson(Map<String, dynamic> json) => ChatHistory(
         messageStatusOfParticipants: List<MessageStatusOfParticipant>.from(json["message_status_of_participants"].map((x) => MessageStatusOfParticipant.fromJson(x))),
@@ -63,7 +63,7 @@ class ChatHistory {
         updatedAt: DateTime.parse(json["updatedAt"]) ?? DateTime.now(),
         roomId: json["room_id"] ?? "",
         senderId: SenderId.fromJson(json["sender_id"]),
-        mediaId: json["media_id"] ?? "",
+        mediaId: json["media_id"] == null ? null : MediaId.fromJson(json["media_id"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -121,6 +121,38 @@ class MessageStatusOfParticipant {
         "receiver_id": receiverId,
         "room_id": roomId,
       };
+}
+
+class MediaId {
+  MediaId({
+    required this.id,
+    required this.media,
+    required this.type,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  String id;
+  String media;
+  String type;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  factory MediaId.fromJson(Map<String, dynamic> json) => MediaId(
+    id: json["_id"],
+    media: json["media"],
+    type: json["type"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "media": media,
+    "type": type,
+    "createdAt": createdAt.toIso8601String(),
+    "updatedAt": updatedAt.toIso8601String(),
+  };
 }
 
 class SenderId {

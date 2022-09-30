@@ -37,6 +37,8 @@ class ResponseModel<T> {
       return UserModel.fromJson(json) as T;
     } else if (T == Room) {
       return Room.fromJson(json) as T;
+    } else if (T == ImagesData) {
+      return ImagesData.fromJson(json) as T;
     } else if (T == List<ChatUser>) {
       return List<ChatUser>.from(json.map((x) => ChatUser.fromJson(x))) as T;
     } else if (T == List<User>) {

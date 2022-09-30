@@ -1,9 +1,3 @@
-import 'dart:io';
-
-import '../../singleton/user_data_singleton.dart';
-import '../../util/app_logger.dart';
-import 'package:tuple/tuple.dart';
-
 enum EventType {
   connect,
   userList,
