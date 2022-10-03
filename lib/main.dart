@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_demo/service/fcm/notification_service.dart';
 import 'package:flutter_demo/util/app_logger.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'firebase_options.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/services.dart';
@@ -80,19 +81,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AppController>(
       builder: (controller) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          getPages: AppRoutes.routes,
-          // initialBinding: PlatformChannelsBinding(),
-          // initialRoute: ScreenRoutesConstant.loginScreen,
-          initialRoute: ScreenRoutesConstant.homeScreen,
-          translations: LanguageUtil(),
-          locale: currentLocale,
-          fallbackLocale: LanguageUtil.fallbackLocale,
-          theme: ThemeData(
-            useMaterial3: true,
-            primarySwatch: Colors.blue,
-          ),
+        return ScreenUtilInit(
+          designSize: const Size(375, 812),
+          builder: (BuildContext context, Widget? child) {
+            return GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              getPages: AppRoutes.routes,
+              // initialBinding: PlatformChannelsBinding(),
+              // initialRoute: ScreenRoutesConstant.loginScreen,
+              initialRoute: ScreenRoutesConstant.homeScreen,
+              translations: LanguageUtil(),
+              locale: currentLocale,
+              fallbackLocale: LanguageUtil.fallbackLocale,
+              theme: ThemeData(
+                useMaterial3: true,
+                primarySwatch: Colors.blue,
+              ),
+            );
+          }
         );
       },
     );

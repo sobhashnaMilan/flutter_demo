@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_demo/controllers/chat/chat_list_controller.dart';
 import 'package:flutter_demo/helper_manager/network_manager/api_constant.dart';
+import 'package:flutter_demo/helper_manager/permission_manager/permission_manager.dart';
 import 'package:flutter_demo/helper_manager/socket_manager/socket_constant.dart';
 import 'package:flutter_demo/singleton/user_data_singleton.dart';
 import 'package:flutter_demo/util/app_logger.dart';
@@ -9,8 +12,10 @@ import 'package:flutter_demo/util/date_util.dart';
 import 'package:flutter_demo/util/import_export_util.dart';
 import 'package:flutter_demo/util/remove_glow_effect.dart';
 import 'package:flutter_demo/util/ui_helper.dart';
+import 'package:flutter_demo/util/web_ui_helper.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatListController controller;
@@ -63,7 +68,11 @@ class ChatScreen extends StatelessWidget {
       croppedImage = await ImageCropper().cropImage(
         sourcePath: path,
         aspectRatioPresets: setAspectRatios(),
-        uiSettings: buildUiSettings(context),
+        uiSettings: defaultTargetPlatform == TargetPlatform.android
+            ? buildUiSettings(context)
+            : defaultTargetPlatform == TargetPlatform.iOS
+                ? buildUiSettings(context)
+                : buildWebUiSettings(context),
       );
       if (croppedImage != null) {
         Logger().d(croppedImage!.path);
@@ -71,12 +80,7 @@ class ChatScreen extends StatelessWidget {
         var file = AppMultiPartFile(localFiles: [File(croppedImage!.path)], key: "image");
         arrFile.add(file);
         Logger().d("croppedImage ${arrFile[0].localFiles![0].path}");
-        controller.uploadFileAPICall(
-            file: arrFile,
-            onError: (data) {
-              Logger().d(data);
-            },
-            requestParams: null);
+        fileApiCall(arrFile, context);
       } else {
         // ignore: use_build_context_synchronously
         SnackbarUtil.showSnackbar(
@@ -159,7 +163,11 @@ class ChatScreen extends StatelessWidget {
                     padding: EdgeInsets.only(left: CommonStyle.setDynamicWidth(context: context, value: 0.006)),
                     child: Text(
                       controller.userName.value,
-                      style: setFontSize(context),
+                      style: ResponsiveUtil.isMobile(context)
+                          ? black80Medium18TextStyle(context)
+                          : ResponsiveUtil.isTablet(context)
+                              ? black80Medium20TextStyle(context)
+                              : black80Medium14TextStyle(context),
                       // maxLines: 5,
                     ),
                   ),
@@ -174,7 +182,7 @@ class ChatScreen extends StatelessWidget {
                           padding: EdgeInsets.only(left: CommonStyle.setDynamicWidth(context: context, value: 0.006)),
                           child: Text(
                             "online",
-                            style: type == DeviceType.mobile ? black80Medium14TextStyle(context) : black80Medium12TextStyle(context),
+                            style: type == DeviceType.mobile ? black80Medium12TextStyle(context) : black80Medium12TextStyle(context),
                           ))
                 ],
               ),
@@ -183,6 +191,16 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  TextStyle setFontSize(BuildContext context) {
+    if (ResponsiveUtil.isMobile(context)) {
+      return black80Medium14TextStyle(context);
+    } else if (ResponsiveUtil.isTablet(context)) {
+      return black80Medium20TextStyle(context);
+    } else {
+      return black80Medium14TextStyle(context);
+    }
   }
 
   Widget buildListViewLayout(DeviceType type, BuildContext context) {
@@ -239,7 +257,11 @@ class ChatScreen extends StatelessWidget {
                         errorBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
                         contentPadding: EdgeInsets.only(
-                          bottom: type == DeviceType.mobile ? CommonStyle.setDynamicHeight(context: context, value: 0.012) : CommonStyle.setDynamicHeight(context: context, value: 0.02),
+                          bottom: type == DeviceType.mobile
+                              ? CommonStyle.setDynamicHeight(context: context, value: 0.012)
+                              : ResponsiveUtil.isTablet(context)
+                                  ? CommonStyle.setDynamicHeight(context: context, value: 0.02)
+                                  : CommonStyle.setDynamicHeight(context: context, value: 0.005),
                         ),
                         hintStyle: type == DeviceType.mobile ? black80Medium18TextStyle(context) : black60Medium16TextStyle(context),
                         hintText: "write a message..."),
@@ -249,8 +271,17 @@ class ChatScreen extends StatelessWidget {
             ],
           )),
           InkWell(
-            onTap: () {
-              selectOrCaptureImage(ImageSource.gallery, context, type);
+            onTap: () async {
+              // selectOrCaptureImage(ImageSource.gallery, context, type);
+
+              FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+              if (result != null) {
+                var file = AppMultiPartFile(localFiles: [File(result.files.single.path!)], key: "image");
+                arrFile.add(file);
+                Logger().d("croppedImage ${arrFile[0].localFiles![0].path}");
+                fileApiCall(arrFile, context);
+              } else {}
             },
             child: Container(
               padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.011),
@@ -263,7 +294,7 @@ class ChatScreen extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              controller.sendMessage(context: context, message: controller.sendMessageController.text);
+              controller.sendMessage(context: context, message: controller.sendMessageController.text, imageId: "");
               controller.sendMessageController.text = "";
             },
             child: Container(
@@ -336,39 +367,56 @@ class ChatScreen extends StatelessWidget {
                           ? CommonStyle.setLongestSide(context: context, value: 0.055)
                           : ResponsiveUtil.isTablet(context)
                               ? CommonStyle.setShortestSide(context: context, value: 0.4)
-                              : CommonStyle.setShortestSide(context: context, value: 0.07),
+                              : CommonStyle.setShortestSide(context: context, value: 0.5),
                       maxWidth: type == DeviceType.mobile
                           ? CommonStyle.setLongestSide(context: context, value: 0.055)
                           : ResponsiveUtil.isTablet(context)
-                          ? CommonStyle.setShortestSide(context: context, value: 0.4)
-                          : CommonStyle.setShortestSide(context: context, value: 0.07),
+                              ? CommonStyle.setShortestSide(context: context, value: 0.4)
+                              : CommonStyle.setShortestSide(context: context, value: 0.5),
                     ),
                     child: Image.network(
                       SocketConstant.baseDomainSocket + controller.chatHistoryList[i].mediaId!.media,
                     ),
                   )
-                : Text(
-                  (controller.chatHistoryList[i].content),
-                  style:
-                      controller.chatHistoryList[i].senderId.id == userDataSingleton.id && deviceType == DeviceType.mobile ? white80Medium12TextStyle(context) : black80Medium10TextStyle(context),
-                  // maxLines: 5,
-                ),
+                : controller.chatHistoryList[i].type == "text"
+                    ? Text((controller.chatHistoryList[i].content), style: setMessageFontSize(context, i))
+                    : Text((controller.chatHistoryList[i].type), style: setMessageFontSize(context, i)),
           ),
         ),
         Text(
           getTime(i),
-          style: black80Medium10TextStyle(context),
+          style: setTimeFontSize(context, i),
         ),
         SizedBox(height: CommonStyle.setDynamicHeight(context: context, value: 0.02)),
       ],
     );
   }
 
-  TextStyle setFontSize(BuildContext context) {
-    if (ResponsiveUtil.isMobile(context)) {
-      return black80Medium14TextStyle(context);
+  TextStyle setMessageFontSize(BuildContext context, int i) {
+    if (ResponsiveUtil.isMobile(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
+      return white80Medium12TextStyle(context);
+    } else if (ResponsiveUtil.isTablet(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
+      return white80Medium10TextStyle(context);
+    } else if (ResponsiveUtil.isDesktop(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
+      return white80Medium8TextStyle(context);
+    } else if (ResponsiveUtil.isMobile(context)) {
+      return black80Medium12TextStyle(context);
     } else if (ResponsiveUtil.isTablet(context)) {
-      return black80Medium20TextStyle(context);
+      return black80Medium10TextStyle(context);
+    } else if (ResponsiveUtil.isDesktop(context)) {
+      return black80Medium8TextStyle(context);
+    } else {
+      return black80Medium10TextStyle(context);
+    }
+  }
+
+  TextStyle setTimeFontSize(BuildContext context, int i) {
+    if (ResponsiveUtil.isMobile(context)) {
+      return black80Medium12TextStyle(context);
+    } else if (ResponsiveUtil.isTablet(context)) {
+      return black80Medium10TextStyle(context);
+    } else if (ResponsiveUtil.isDesktop(context)) {
+      return black80Medium8TextStyle(context);
     } else {
       return black80Medium10TextStyle(context);
     }
@@ -382,5 +430,15 @@ class ChatScreen extends StatelessWidget {
         : DateUtil.getFormattedDate(date: DateUtil.dateTimeUtcToLocal(date: controller.chatHistoryList[i].createdAt.toString()), flag: 4);
 
     return (date);
+  }
+
+  fileApiCall(List<AppMultiPartFile> arrayFile, BuildContext context) {
+    controller.uploadFileAPICall(
+        context: context,
+        file: arrayFile,
+        onError: (data) {
+          Logger().d(data);
+        },
+        requestParams: null);
   }
 }

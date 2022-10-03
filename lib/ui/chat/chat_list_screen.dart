@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_demo/bindings/common/home_binding.dart';
 import 'package:flutter_demo/controllers/chat/chat_list_controller.dart';
 import 'package:flutter_demo/singleton/user_data_singleton.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_demo/util/app_logger.dart';
 import 'package:flutter_demo/util/date_util.dart';
 import 'package:flutter_demo/util/import_export_util.dart';
 import 'package:flutter_demo/util/remove_glow_effect.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({Key? key}) : super(key: key);
@@ -24,8 +26,20 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   void initState() {
     super.initState();
+    permissionCheck();
     getUserList();
     getChatList();
+  }
+
+  void permissionCheck() async {
+    try {
+      final bool result = await controller.platform.invokeMethod('permissionCheck');
+      controller.hasPermission.value = result;
+      Logger().d(result);
+    } on PlatformException catch (e) {
+      controller.hasPermission.value = false;
+      Logger().d(e.message);
+    }
   }
 
   getUserList({bool pullToRefresh = false}) async {
@@ -141,7 +155,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           Get.back();
                           await logoutUser();
                           Get.offAll(
-                                () => const HomeScreen(),
+                            () => const HomeScreen(),
                             binding: HomeBinding(),
                           );
                         },

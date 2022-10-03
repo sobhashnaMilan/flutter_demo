@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../util/app_common_stuffs/colors.dart';
 import '../../util/app_common_stuffs/string_constants.dart';
 import 'package:flutter/material.dart';
@@ -6364,7 +6365,7 @@ TextStyle white85Medium12TextStyle(context) {
 TextStyle white80Medium12TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.012,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor.withOpacity(0.80),
   );
@@ -7229,7 +7230,7 @@ TextStyle black85Medium10TextStyle(context) {
 TextStyle black80Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.010,
+    fontSize: 10.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.blackColor.withOpacity(0.80),
   );
@@ -7238,7 +7239,7 @@ TextStyle black80Medium10TextStyle(context) {
 TextStyle black80Medium8TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.08,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.008,
     fontWeight: FontWeight.w500,
     color: AppColors.blackColor.withOpacity(0.80),
   );
@@ -7328,16 +7329,15 @@ TextStyle white85Medium10TextStyle(context) {
 TextStyle white80Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.010,
+    fontSize: 10.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor.withOpacity(0.80),
   );
 }
-
 TextStyle white80Medium8TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: MediaQuery.of(context).size.longestSide * 0.008,
+    fontSize: 4.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor.withOpacity(0.80),
   );
