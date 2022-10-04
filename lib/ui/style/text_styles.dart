@@ -7230,7 +7230,7 @@ TextStyle black85Medium10TextStyle(context) {
 TextStyle black80Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: 10.sp,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.010,
     fontWeight: FontWeight.w500,
     color: AppColors.blackColor.withOpacity(0.80),
   );
@@ -7244,7 +7244,6 @@ TextStyle black80Medium8TextStyle(context) {
     color: AppColors.blackColor.withOpacity(0.80),
   );
 }
-
 TextStyle black75Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
@@ -7329,15 +7328,7 @@ TextStyle white85Medium10TextStyle(context) {
 TextStyle white80Medium10TextStyle(context) {
   return TextStyle(
     fontFamily: StringConstant.poppinsFont,
-    fontSize: 10.sp,
-    fontWeight: FontWeight.w500,
-    color: AppColors.whiteColor.withOpacity(0.80),
-  );
-}
-TextStyle white80Medium8TextStyle(context) {
-  return TextStyle(
-    fontFamily: StringConstant.poppinsFont,
-    fontSize: 4.sp,
+    fontSize: MediaQuery.of(context).size.longestSide * 0.010,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor.withOpacity(0.80),
   );
@@ -7683,5 +7674,34 @@ TextStyle primary60Regular10TextStyle(context) {
     fontFamily: StringConstant.poppinsFont,
     fontSize: MediaQuery.of(context).size.longestSide * 0.010,
     color: AppColors.primaryColor.withOpacity(0.60),
+  );
+}
+
+/// chat
+
+TextStyle black80Medium18TextStyleChatUser(context) {
+  return TextStyle(
+    fontFamily: StringConstant.poppinsFont,
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: AppColors.blackColor.withOpacity(0.80),
+  );
+}
+
+TextStyle black80Medium14TextStyleChat(context) {
+  return TextStyle(
+    fontFamily: StringConstant.poppinsFont,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.blackColor.withOpacity(0.80),
+  );
+}
+
+TextStyle white80Medium14TextStyleChat(context) {
+  return TextStyle(
+    fontFamily: StringConstant.poppinsFont,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.whiteColor.withOpacity(0.80),
   );
 }

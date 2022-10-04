@@ -13,6 +13,7 @@ import 'package:flutter_demo/util/import_export_util.dart';
 import 'package:flutter_demo/util/remove_glow_effect.dart';
 import 'package:flutter_demo/util/ui_helper.dart';
 import 'package:flutter_demo/util/web_ui_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -125,12 +126,12 @@ class ChatScreen extends StatelessWidget {
 
   Widget customAppBar(DeviceType type, BuildContext context) {
     return Container(
-      height: type == DeviceType.mobile ? CommonStyle.setDynamicHeight(context: context, value: 0.09) : CommonStyle.setDynamicHeight(context: context, value: 0.14),
+      height: 100,
       padding: EdgeInsets.fromLTRB(
         CommonStyle.setDynamicWidth(context: context, value: 0.02),
-        type == DeviceType.mobile ? CommonStyle.setDynamicHeight(context: context, value: 0.03) : CommonStyle.setDynamicHeight(context: context, value: 0.04),
+        CommonStyle.setDynamicHeight(context: context, value: 0.02),
         CommonStyle.setDynamicWidth(context: context, value: 0.02),
-        CommonStyle.setDynamicHeight(context: context, value: 0.00),
+        CommonStyle.setDynamicHeight(context: context, value: 0.02),
       ),
       color: Colors.white30,
       child: Row(
@@ -140,16 +141,8 @@ class ChatScreen extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                height: type == DeviceType.mobile
-                    ? CommonStyle.setLongestSide(context: context, value: 0.055)
-                    : ResponsiveUtil.isTablet(context)
-                        ? CommonStyle.setShortestSide(context: context, value: 0.06)
-                        : CommonStyle.setShortestSide(context: context, value: 0.07),
-                width: type == DeviceType.mobile
-                    ? CommonStyle.setLongestSide(context: context, value: 0.055)
-                    : ResponsiveUtil.isTablet(context)
-                        ? CommonStyle.setShortestSide(context: context, value: 0.06)
-                        : CommonStyle.setShortestSide(context: context, value: 0.07),
+                height: 60.h,
+                width: 60.h,
                 child: Image.network(
                   "https://raw.githubusercontent.com/sobhashnaMilan/image/main/user_icon.png",
                   fit: BoxFit.fill,
@@ -163,11 +156,7 @@ class ChatScreen extends StatelessWidget {
                     padding: EdgeInsets.only(left: CommonStyle.setDynamicWidth(context: context, value: 0.006)),
                     child: Text(
                       controller.userName.value,
-                      style: ResponsiveUtil.isMobile(context)
-                          ? black80Medium18TextStyle(context)
-                          : ResponsiveUtil.isTablet(context)
-                              ? black80Medium20TextStyle(context)
-                              : black80Medium14TextStyle(context),
+                      style: black80Medium18TextStyleChatUser(context),
                       // maxLines: 5,
                     ),
                   ),
@@ -176,13 +165,13 @@ class ChatScreen extends StatelessWidget {
                           padding: EdgeInsets.only(left: CommonStyle.setDynamicWidth(context: context, value: 0.006)),
                           child: Text(
                             "typing.......",
-                            style: type == DeviceType.mobile ? black80Medium14TextStyle(context) : black80Medium12TextStyle(context),
+                            style: black80Medium14TextStyleChat(context),
                           ))
                       : Container(
                           padding: EdgeInsets.only(left: CommonStyle.setDynamicWidth(context: context, value: 0.006)),
                           child: Text(
                             "online",
-                            style: type == DeviceType.mobile ? black80Medium12TextStyle(context) : black80Medium12TextStyle(context),
+                            style: black80Medium14TextStyleChat(context),
                           ))
                 ],
               ),
@@ -225,72 +214,87 @@ class ChatScreen extends StatelessWidget {
 
   Widget sendMessageLayout(DeviceType type, BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       width: Get.width,
-      padding: EdgeInsets.symmetric(horizontal: CommonStyle.setDynamicWidth(context: context, value: 0.02)),
       child: Row(
         children: [
           Expanded(
-              child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: TextFieldComponent(
-                    context: context,
-                    deviceType: type,
-                    onChange: (v) {
-                      controller.userTyping(typeId: "1");
-                      controller.sendMessageController.addListener(() {
-                        controller.debounceText.value = v;
-                      });
-                    },
-                    textInputType: TextInputType.emailAddress,
-                    hint: "write a message..",
-                    isDecoration: true,
-                    textEditingController: controller.sendMessageController,
-                    isStyle: true,
-                    style: type == DeviceType.mobile ? black80Medium18TextStyle(context) : black60Medium12TextStyle(context),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.only(
-                          bottom: type == DeviceType.mobile
-                              ? CommonStyle.setDynamicHeight(context: context, value: 0.012)
-                              : ResponsiveUtil.isTablet(context)
-                                  ? CommonStyle.setDynamicHeight(context: context, value: 0.02)
-                                  : CommonStyle.setDynamicHeight(context: context, value: 0.005),
-                        ),
-                        hintStyle: type == DeviceType.mobile ? black80Medium18TextStyle(context) : black60Medium16TextStyle(context),
-                        hintText: "write a message..."),
-                  ),
-                ),
-              ),
-            ],
-          )),
-          InkWell(
-            onTap: () async {
-              // selectOrCaptureImage(ImageSource.gallery, context, type);
-
-              FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-              if (result != null) {
-                var file = AppMultiPartFile(localFiles: [File(result.files.single.path!)], key: "image");
-                arrFile.add(file);
-                Logger().d("croppedImage ${arrFile[0].localFiles![0].path}");
-                fileApiCall(arrFile, context);
-              } else {}
-            },
             child: Container(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.011),
-              child: Icon(
-                size: type == DeviceType.mobile ? MediaQuery.of(context).size.shortestSide * 0.04 : MediaQuery.of(context).size.shortestSide * 0.04,
-                Icons.attach_file,
-                color: AppColors.secondaryBorderColor,
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: TextFieldComponent(
+                context: context,
+                deviceType: type,
+                onChange: (v) {
+                  controller.userTyping(typeId: "1");
+                  controller.sendMessageController.addListener(() {
+                    controller.debounceText.value = v;
+                  });
+                },
+                textInputType: TextInputType.emailAddress,
+                hint: "write a message..",
+                isDecoration: true,
+                textEditingController: controller.sendMessageController,
+                isStyle: true,
+                style: black80Medium18TextStyleChatUser(context),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintStyle: black80Medium18TextStyleChatUser(context),
+                    hintText: "write a message..."),
               ),
             ),
+          ),
+          Container(
+            // padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.011),
+            child: PopupMenuButton<Menu>(
+                icon: const Icon(Icons.attach_file),
+                onSelected: (Menu item) async {
+                  if (item.name == "itemOne") {
+                    // camera
+                    Logger().d("camera");
+                    selectOrCaptureImage(ImageSource.camera, context, type);
+                  } else if (item.name == "itemTwo") {
+                    // Gallery
+                    Logger().d("Gallery");
+                    selectOrCaptureImage(ImageSource.gallery, context, type);
+                  } else if (item.name == "itemThree") {
+                    // Document
+                    Logger().d("Document");
+                    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                    if (result != null) {
+                      var file = AppMultiPartFile(localFiles: [File(result.files.single.path!)], key: "image");
+                      arrFile.add(file);
+                      Logger().d("croppedImage ${arrFile[0].localFiles![0].path}");
+                      fileApiCall(arrFile, context);
+                    }
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                      const PopupMenuItem<Menu>(
+                        value: Menu.itemOne,
+                        child: ListTile(
+                          leading: Icon(Icons.camera_alt_outlined),
+                          title: Text('Camera'),
+                        ),
+                      ),
+                      const PopupMenuItem<Menu>(
+                        value: Menu.itemTwo,
+                        child: ListTile(
+                          leading: Icon(Icons.image_outlined),
+                          title: Text('Gallery'),
+                        ),
+                      ),
+                      const PopupMenuItem<Menu>(
+                        value: Menu.itemThree,
+                        child: ListTile(
+                          leading: Icon(Icons.file_copy_outlined),
+                          title: Text('Document'),
+                        ),
+                      ),
+                    ]),
           ),
           InkWell(
             onTap: () {
@@ -298,9 +302,8 @@ class ChatScreen extends StatelessWidget {
               controller.sendMessageController.text = "";
             },
             child: Container(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.011),
+              // padding: EdgeInsets.all(MediaQuery.of(context).size.longestSide * 0.011),
               child: Icon(
-                size: type == DeviceType.mobile ? MediaQuery.of(context).size.shortestSide * 0.04 : MediaQuery.of(context).size.shortestSide * 0.04,
                 Icons.send,
                 color: AppColors.secondaryBorderColor,
               ),
@@ -354,72 +357,43 @@ class ChatScreen extends StatelessWidget {
               )),
           constraints: BoxConstraints(maxWidth: CommonStyle.setLongestSide(context: context, value: 0.6)),
           child: Container(
-            padding: EdgeInsets.fromLTRB(
-              CommonStyle.setDynamicWidth(context: context, value: 0.009),
-              CommonStyle.setDynamicHeight(context: context, value: 0.009),
-              CommonStyle.setDynamicWidth(context: context, value: 0.009),
-              CommonStyle.setDynamicHeight(context: context, value: 0.009),
-            ),
-            child: controller.chatHistoryList[i].type == "image"
-                ? Container(
-                    constraints: BoxConstraints(
-                      maxHeight: type == DeviceType.mobile
-                          ? CommonStyle.setLongestSide(context: context, value: 0.055)
-                          : ResponsiveUtil.isTablet(context)
-                              ? CommonStyle.setShortestSide(context: context, value: 0.4)
-                              : CommonStyle.setShortestSide(context: context, value: 0.5),
-                      maxWidth: type == DeviceType.mobile
-                          ? CommonStyle.setLongestSide(context: context, value: 0.055)
-                          : ResponsiveUtil.isTablet(context)
-                              ? CommonStyle.setShortestSide(context: context, value: 0.4)
-                              : CommonStyle.setShortestSide(context: context, value: 0.5),
-                    ),
-                    child: Image.network(
-                      SocketConstant.baseDomainSocket + controller.chatHistoryList[i].mediaId!.media,
-                    ),
-                  )
-                : controller.chatHistoryList[i].type == "text"
-                    ? Text((controller.chatHistoryList[i].content), style: setMessageFontSize(context, i))
-                    : Text((controller.chatHistoryList[i].type), style: setMessageFontSize(context, i)),
-          ),
+              padding: EdgeInsets.fromLTRB(
+                CommonStyle.setDynamicWidth(context: context, value: 0.009),
+                CommonStyle.setDynamicHeight(context: context, value: 0.009),
+                CommonStyle.setDynamicWidth(context: context, value: 0.009),
+                CommonStyle.setDynamicHeight(context: context, value: 0.009),
+              ),
+              child: controller.chatHistoryList[i].type == "image"
+                  ? Container(
+                      constraints: BoxConstraints(
+                        maxHeight: type == DeviceType.mobile
+                            ? CommonStyle.setLongestSide(context: context, value: 0.055)
+                            : ResponsiveUtil.isTablet(context)
+                                ? CommonStyle.setShortestSide(context: context, value: 0.4)
+                                : CommonStyle.setShortestSide(context: context, value: 0.5),
+                        maxWidth: type == DeviceType.mobile
+                            ? CommonStyle.setLongestSide(context: context, value: 0.055)
+                            : ResponsiveUtil.isTablet(context)
+                                ? CommonStyle.setShortestSide(context: context, value: 0.4)
+                                : CommonStyle.setShortestSide(context: context, value: 0.5),
+                      ),
+                      child: Image.network(
+                        SocketConstant.baseDomainSocket + controller.chatHistoryList[i].mediaId!.media,
+                      ),
+                    )
+                  : controller.chatHistoryList[i].type == "text"
+                      ? Text((controller.chatHistoryList[i].content),
+                          style: controller.chatHistoryList[i].senderId.id == userDataSingleton.id ? white80Medium14TextStyleChat(context) : black80Medium14TextStyleChat(context))
+                      : Text((controller.chatHistoryList[i].type),
+                          style: controller.chatHistoryList[i].senderId.id == userDataSingleton.id ? white80Medium14TextStyleChat(context) : black80Medium14TextStyleChat(context))),
         ),
         Text(
           getTime(i),
-          style: setTimeFontSize(context, i),
+          style: black80Medium14TextStyleChat(context),
         ),
         SizedBox(height: CommonStyle.setDynamicHeight(context: context, value: 0.02)),
       ],
     );
-  }
-
-  TextStyle setMessageFontSize(BuildContext context, int i) {
-    if (ResponsiveUtil.isMobile(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
-      return white80Medium12TextStyle(context);
-    } else if (ResponsiveUtil.isTablet(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
-      return white80Medium10TextStyle(context);
-    } else if (ResponsiveUtil.isDesktop(context) && controller.chatHistoryList[i].senderId.id == userDataSingleton.id) {
-      return white80Medium8TextStyle(context);
-    } else if (ResponsiveUtil.isMobile(context)) {
-      return black80Medium12TextStyle(context);
-    } else if (ResponsiveUtil.isTablet(context)) {
-      return black80Medium10TextStyle(context);
-    } else if (ResponsiveUtil.isDesktop(context)) {
-      return black80Medium8TextStyle(context);
-    } else {
-      return black80Medium10TextStyle(context);
-    }
-  }
-
-  TextStyle setTimeFontSize(BuildContext context, int i) {
-    if (ResponsiveUtil.isMobile(context)) {
-      return black80Medium12TextStyle(context);
-    } else if (ResponsiveUtil.isTablet(context)) {
-      return black80Medium10TextStyle(context);
-    } else if (ResponsiveUtil.isDesktop(context)) {
-      return black80Medium8TextStyle(context);
-    } else {
-      return black80Medium10TextStyle(context);
-    }
   }
 
   String getTime(int i) {
@@ -442,3 +416,5 @@ class ChatScreen extends StatelessWidget {
         requestParams: null);
   }
 }
+
+enum Menu { itemOne, itemTwo, itemThree }
